@@ -25,9 +25,9 @@ export default function StaffPage() {
     phone: "",
     email: "",
     citizenIdentification: "",
-    role: false,
+    isAdmin: false,
     gender: false,
-    isActived: false,
+    isActive: false,
     isDeleted: false,
   });
 
@@ -68,9 +68,9 @@ export default function StaffPage() {
       phone: "",
       email: "",
       citizenIdentification: "",
-      role: false,
+      isAdmin: false,
       gender: false,
-      isActived: false,
+      isActive: false,
       isDeleted: false,
     });
     setIsEdit(false);
@@ -145,7 +145,7 @@ export default function StaffPage() {
         let aValue = a[sortConfig.key];
         let bValue = b[sortConfig.key];
 
-        if (["gender", "role", "isActived", "isDeleted"].includes(sortConfig.key)) {
+        if (["gender", "isAdmin", "isActive", "isDeleted"].includes(sortConfig.key)) {
           aValue = aValue ? 1 : 0;
           bValue = bValue ? 1 : 0;
         } else if (sortConfig.key === "dateOfBirth") {
@@ -210,8 +210,8 @@ export default function StaffPage() {
               ["email", "Email"],
               ["address", "Địa chỉ"],
               ["citizenIdentification", "CCCD"],
-              ["role", "Vai trò"],
-              ["isActived", "Đang hoạt động"],
+              ["isAdmin", "Vai trò"],
+              ["isActive", "Đang hoạt động"],
               ["isDeleted", "Đã xoá"],
             ].map(([key, label]) => (
               <th key={key} onClick={() => handleSort(key)} style={{ cursor: "pointer" }}>
@@ -238,8 +238,8 @@ export default function StaffPage() {
                 <td>{s.email}</td>
                 <td>{s.address}</td>
                 <td>{s.citizenIdentification}</td>
-                <td>{s.role ? "Admin" : "Staff"}</td>
-                <td><input type="checkbox" checked={s.isActived} readOnly /></td>
+                <td>{s.isAdmin ? "Quản trị viên" : "Nhân viên"}</td>
+                <td><input type="checkbox" checked={s.isActive} readOnly /></td>
                 <td><input type="checkbox" checked={s.isDeleted} readOnly /></td>
                 <td>
                   <button className="btn btn-info btn-sm me-2" onClick={() => openEdit(s)}>Sửa</button>
@@ -359,11 +359,11 @@ export default function StaffPage() {
                   <label>Vai trò:</label>
                   <select
                     className="form-select"
-                    value={form.role}
-                    onChange={(e) => setForm({ ...form, role: e.target.value === "true" })}
+                    value={form.isAdmin}
+                    onChange={(e) => setForm({ ...form, isAdmin: e.target.value === "true" })}
                   >
-                    <option value="false">Staff</option>
-                    <option value="true">Admin</option>
+                    <option value="false">Nhân viên</option>
+                    <option value="true">Quản trị viên</option>
                   </select>
                 </div>
 
@@ -371,8 +371,8 @@ export default function StaffPage() {
                   <label>Actived:</label>
                   <input
                     type="checkbox"
-                    checked={form.isActived}
-                    onChange={(e) => setForm({ ...form, isActived: e.target.checked })}
+                    checked={form.isActive}
+                    onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
                   />
                 </div>
 

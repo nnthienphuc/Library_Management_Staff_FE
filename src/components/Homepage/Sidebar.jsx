@@ -6,7 +6,7 @@ const menuItems = [
   // { label: 'Đơn hàng', path: '/admin/order' },
   { label: 'Danh mục sách', path: '/admin/category' },
   // { label: 'Khách hàng', path: '/admin/customer' },
-  // { label: 'Nhân viên', path: '/admin/staff' },
+  { label: 'Nhân viên', path: '/admin/staff' },
   { label: 'Tác giả', path: '/admin/author' },
   { label: 'Nhà xuất bản', path: '/admin/publisher' },
   // { label: 'Thống kê', path: '/admin/statistics' },
