@@ -118,7 +118,7 @@ export default function CategoryPage() {
 
   return (
     <div className="container mt-4">
-      <h2>Danh sách Danh mục sách</h2>
+      <h2>Danh sách Thể loại sách</h2>
       <div className="d-flex gap-2 mb-3">
         <button className="btn btn-success" onClick={openAdd}>
           Thêm

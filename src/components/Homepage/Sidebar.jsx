@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const menuItems = [
   { label: 'Sách', path: '/admin/book' },
   // { label: 'Đơn hàng', path: '/admin/order' },
-  { label: 'Danh mục sách', path: '/admin/category' },
+  { label: 'Thể loại sách', path: '/admin/category' },
   // { label: 'Khách hàng', path: '/admin/customer' },
   { label: 'Nhân viên', path: '/admin/staff' },
   { label: 'Tác giả', path: '/admin/author' },
