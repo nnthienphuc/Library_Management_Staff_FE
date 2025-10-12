@@ -17,8 +17,8 @@ export default function BookPage() {
     publisherId: "",
     publisherName: "",
     yearOfPublication: "",
-    price: "",
     quantity: "",
+    available: "",
     isDeleted: false,
     description: "",
     image: null,
@@ -113,8 +113,8 @@ export default function BookPage() {
       publisherId: "",
       publisherName: "",
       yearOfPublication: "",
-      price: "",
       quantity: "",
+      available: "",
       description: "",
       isDeleted: false,
       image: null,
@@ -136,8 +136,8 @@ export default function BookPage() {
       publisherId: book.publisherId || "",
       publisherName: book.publisherName || "",
       yearOfPublication: book.yearOfPublication,
-      price: book.price,
       quantity: book.quantity,
+      available: book.available,
       description: book.description || "",
       isDeleted: book.isDeleted,
       image: null,
@@ -164,8 +164,8 @@ export default function BookPage() {
       formData.append("authorId", form.authorId);
       formData.append("publisherId", form.publisherId);
       formData.append("yearOfPublication", form.yearOfPublication);
-      formData.append("price", form.price);
       formData.append("quantity", form.quantity);
+      formData.append("available", form.available);
       formData.append("description", form.description || "");
       formData.append("isDeleted", form.isDeleted);
 
@@ -295,16 +295,16 @@ export default function BookPage() {
               Năm {getSortIcon("yearOfPublication")}
             </th>
             <th
-              onClick={() => toggleSort("price")}
-              style={{ cursor: "pointer" }}
-            >
-              Giá {getSortIcon("price")}
-            </th>
-            <th
               onClick={() => toggleSort("quantity")}
               style={{ cursor: "pointer" }}
             >
               Số lượng {getSortIcon("quantity")}
+            </th>
+            <th
+              onClick={() => toggleSort("available")}
+              style={{ cursor: "pointer" }}
+            >
+              Còn hàng {getSortIcon("available")}
             </th>
             <th
               onClick={() => toggleSort("isDeleted")}
@@ -333,8 +333,8 @@ export default function BookPage() {
                 <td>{b.categoryName}</td>
                 <td>{b.publisherName}</td>
                 <td>{b.yearOfPublication}</td>
-                <td>{b.price}</td>
                 <td>{b.quantity}</td>
+                <td>{b.available}</td>
                 <td>
                   <input type="checkbox" checked={b.isDeleted} readOnly />
                 </td>
@@ -493,8 +493,8 @@ export default function BookPage() {
 
                 {[
                   { field: "yearOfPublication", label: "Năm xuất bản" },
-                  { field: "price", label: "Giá" },
                   { field: "quantity", label: "Số lượng" },
+                  { field: "available", label: "Còn hàng" },
                 ].map(({ field, label }) => (
                   <div key={field} className="col-md-6">
                     <label className="form-label">{label}</label>
