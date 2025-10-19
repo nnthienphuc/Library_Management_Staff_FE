@@ -5,7 +5,7 @@ const menuItems = [
   { label: 'Sách', path: '/admin/book' },
   // { label: 'Đơn hàng', path: '/admin/order' },
   { label: 'Thể loại sách', path: '/admin/category' },
-  // { label: 'Khách hàng', path: '/admin/customer' },
+  { label: 'Khách hàng', path: '/admin/customer' },
   { label: 'Nhân viên', path: '/admin/staff' },
   { label: 'Tác giả', path: '/admin/author' },
   { label: 'Nhà xuất bản', path: '/admin/publisher' },
@@ -30,7 +30,7 @@ export default function Sidebar() {
       flexDirection: 'column',
       padding: 24
     }}>
-      <h2 style={{ fontWeight: 'bold', marginBottom: 36 }}>BOOK STORE 🟩</h2>
+      <h2 style={{ fontWeight: 'bold', marginBottom: 36 }}>Library Management</h2>
 
       {menuItems.map(item => {
         const isActive = pathname.startsWith(item.path);
