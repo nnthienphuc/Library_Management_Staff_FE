@@ -68,13 +68,15 @@ export default function PublisherPage() {
         IsDeleted: form.isDeleted
       };
 
+      let res; 
+
       if (isEdit) {
-        await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
+        res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
       } else {
-        await axiosInstance.post(API_BASE, payload);
+        res = await axiosInstance.post(API_BASE, payload);
       }
 
-      alert('Lưu thành công!');
+      alert(res.data?.message || "Lưu thành công!");
       setModalVisible(false);
       fetchPublishers();
     } catch (err) {
@@ -84,8 +86,8 @@ export default function PublisherPage() {
 
   const handleDelete = async () => {
     try {
-      await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert('Xoá thành công!');
+      const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
+      alert(res.data?.message || "Xoá thành công!");
     } catch (err) {
       alert(err.response?.data?.message || 'Xoá thất bại!');
     } finally {
