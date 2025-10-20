@@ -57,7 +57,7 @@ export default function LoginForm() {
     localStorage.setItem('fullName', fullName);
     localStorage.setItem('isAdmin', isAdmin); // có thể là true/false
 
-    navigate('/admin/category'); // Điều hướng sau login
+    navigate('/admin/book'); // Điều hướng sau login
   } catch (err) {
     setError(err.response?.data?.message || 'Đăng nhập thất bại!');
   } finally {
