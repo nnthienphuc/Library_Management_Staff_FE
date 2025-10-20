@@ -1,37 +1,41 @@
-// AdminLayout.jsx
-import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
+import Sidebar from "./Sidebar";
+import { Outlet } from "react-router-dom";
+import { colors } from "../../theme";
 
 export default function AdminLayout() {
   return (
-    <div style={{
-      display: 'flex',
-      height: '100vh',           // Chiều cao toàn màn hình
-      overflow: 'hidden'         // Không để tổng layout bị scroll
-    }}>
-      {/* Sidebar cố định */}
-      <div style={{
-        width: 220,
-        background: '#176264',
-        color: '#fff',
-        flexShrink: 0,
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        overflowY: 'auto'
-      }}>
+    <div
+      style={{
+        display: "flex",
+        width: "100vw",
+        height: "100dvh",
+        overflow: "hidden",
+        backgroundColor: colors.contentBg, // dùng màu nền dịu hơn
+      }}
+    >
+      {/* Sidebar */}
+      <div
+        style={{
+          width: 240,
+          flexShrink: 0,
+          boxShadow: "2px 0 4px rgba(0,0,0,0.05)", // tạo viền nhẹ phân cách
+          zIndex: 1,
+        }}
+      >
         <Sidebar />
       </div>
 
-      {/* Nội dung chính cuộn riêng */}
-      <div style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: 24,
-        background: '#f6f6f6'
-      }}>
+      {/* Nội dung chính */}
+      <main
+        style={{
+          flex: 1,
+          height: "100dvh",
+          overflowY: "auto",
+          padding: "24px",
+        }}
+      >
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 }
