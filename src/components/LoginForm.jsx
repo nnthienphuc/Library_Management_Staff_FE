@@ -50,8 +50,14 @@ export default function LoginForm() {
   setLoading(true);
   try {
     const res = await axios.post('http://localhost:5286/api/admin/auth/login', formData);
-    localStorage.setItem('token', res.data.token);
-    navigate('/admin/category');  // Đổi sang trang Category CRUD
+    const { fullName, token, isAdmin } = res.data.result;
+
+    // Lưu thông tin vào localStorage
+    localStorage.setItem('token', token);
+    localStorage.setItem('fullName', fullName);
+    localStorage.setItem('isAdmin', isAdmin); // có thể là true/false
+
+    navigate('/admin/category'); // Điều hướng sau login
   } catch (err) {
     setError(err.response?.data?.message || 'Đăng nhập thất bại!');
   } finally {
