@@ -18,7 +18,7 @@ export default function BookPage() {
     publisherName: "",
     yearOfPublication: "",
     quantity: "",
-    available: "",
+    totalQuantity: "",
     isDeleted: false,
     description: "",
     image: null,
@@ -114,7 +114,7 @@ export default function BookPage() {
       publisherName: "",
       yearOfPublication: "",
       quantity: "",
-      available: "",
+      totalQuantity: "",
       description: "",
       isDeleted: false,
       image: null,
@@ -137,7 +137,7 @@ export default function BookPage() {
       publisherName: book.publisherName || "",
       yearOfPublication: book.yearOfPublication,
       quantity: book.quantity,
-      available: book.available,
+      totalQuantity: book.totalQuantity,
       description: book.description || "",
       isDeleted: book.isDeleted,
       image: null,
@@ -165,7 +165,7 @@ export default function BookPage() {
       formData.append("publisherId", form.publisherId);
       formData.append("yearOfPublication", form.yearOfPublication);
       formData.append("quantity", form.quantity);
-      formData.append("available", form.available);
+      formData.append("totalQuantity", form.totalQuantity);
       formData.append("description", form.description || "");
       formData.append("isDeleted", form.isDeleted);
 
@@ -298,13 +298,13 @@ export default function BookPage() {
               onClick={() => toggleSort("quantity")}
               style={{ cursor: "pointer" }}
             >
-              Số lượng {getSortIcon("quantity")}
+              SL Khả dụng {getSortIcon("quantity")}
             </th>
             <th
-              onClick={() => toggleSort("available")}
+              onClick={() => toggleSort("totalQuantity")}
               style={{ cursor: "pointer" }}
             >
-              Còn hàng {getSortIcon("available")}
+              Tổng SL {getSortIcon("totalQuantity")}
             </th>
             <th
               onClick={() => toggleSort("isDeleted")}
@@ -334,7 +334,7 @@ export default function BookPage() {
                 <td>{b.publisherName}</td>
                 <td>{b.yearOfPublication}</td>
                 <td>{b.quantity}</td>
-                <td>{b.available}</td>
+                <td>{b.totalQuantity}</td>
                 <td>
                   <input type="checkbox" checked={b.isDeleted} readOnly />
                 </td>
@@ -493,8 +493,8 @@ export default function BookPage() {
 
                 {[
                   { field: "yearOfPublication", label: "Năm xuất bản" },
-                  { field: "quantity", label: "Số lượng" },
-                  { field: "available", label: "Còn hàng" },
+                  { field: "quantity", label: " SL Khả dụng" },
+                  { field: "totalQuantity", label: "Tổng SL" },
                 ].map(({ field, label }) => (
                   <div key={field} className="col-md-6">
                     <label className="form-label">{label}</label>
