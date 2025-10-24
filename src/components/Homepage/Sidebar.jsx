@@ -28,14 +28,16 @@ export default function Sidebar() {
   };
 
   const sectionStyle = {
-    color: "#ccc",
-    marginTop: 20,
-    marginBottom: 10,
-    fontSize: 13,
-    fontWeight: "bold",
-    paddingLeft: 8,
-    textTransform: "uppercase",
-  };
+  backgroundColor: "#0d3b4c", // Màu nhấn nền nhẹ
+  color: "#f0f0f0",           // Màu chữ sáng
+  padding: "8px 12px",
+  marginTop: 20,
+  borderRadius: 6,
+  fontSize: 14,
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  letterSpacing: 0.5,
+};
 
   const menuItems = [
     {
