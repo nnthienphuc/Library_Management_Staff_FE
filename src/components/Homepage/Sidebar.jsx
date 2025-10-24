@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { colors } from "../../theme";
-
 import {
   FaBook,
   FaThLarge,
@@ -10,19 +9,11 @@ import {
   FaBuilding,
   FaLock,
   FaSignOutAlt,
+  FaLayerGroup,
+  FaAddressCard,
+  FaIdCard,
+  FaCogs,
 } from "react-icons/fa";
-
-const menuItems = [
-  { label: "Sách", path: "/admin/book", icon: <FaBook /> },
-  { label: "Thể loại sách", path: "/admin/category", icon: <FaThLarge /> },
-  { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
-  { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaUserEdit /> },
-  { label: "Hội viên", path: "/admin/membership", icon: <FaUserShield />, adminOnly: true },
-  { label: "Nhân viên", path: "/admin/staff", icon: <FaUserShield />, adminOnly: true },
-  { label: "Tác giả", path: "/admin/author", icon: <FaUserEdit /> },
-  { label: "Nhà xuất bản", path: "/admin/publisher", icon: <FaBuilding /> },
-  { label: "Đổi mật khẩu", path: "/admin/change-password", icon: <FaLock /> },
-];
 
 export default function Sidebar() {
   const { pathname } = useLocation();
@@ -35,6 +26,43 @@ export default function Sidebar() {
     localStorage.clear();
     window.location.href = "/login";
   };
+
+  const sectionStyle = {
+    color: "#ccc",
+    marginTop: 20,
+    marginBottom: 10,
+    fontSize: 13,
+    fontWeight: "bold",
+    paddingLeft: 8,
+    textTransform: "uppercase",
+  };
+
+  const menuItems = [
+    {
+      section: "Quản lý sách",
+      items: [
+        { label: "Sách", path: "/admin/book", icon: <FaBook /> },
+        { label: "Thể loại sách", path: "/admin/category", icon: <FaLayerGroup /> },
+        { label: "Tác giả", path: "/admin/author", icon: <FaUserEdit /> },
+        { label: "Nhà xuất bản", path: "/admin/publisher", icon: <FaBuilding /> },
+      ],
+    },
+    {
+      section: "Khách & Hội viên",
+      items: [
+        { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
+        { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaIdCard /> },
+        { label: "Hội viên", path: "/admin/membership", icon: <FaAddressCard />, adminOnly: true },
+      ],
+    },
+    {
+      section: "Tài khoản & Nhân sự",
+      items: [
+        { label: "Nhân viên", path: "/admin/staff", icon: <FaUserShield />, adminOnly: true },
+        { label: "Đổi mật khẩu", path: "/admin/change-password", icon: <FaLock /> },
+      ],
+    },
+  ];
 
   return (
     <div
@@ -71,34 +99,39 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* MENU ITEMS */}
+        {/* MENU */}
         <nav>
-          {menuItems.map((item) => {
-            if (item.adminOnly && !isAdmin) return null;
-            const isActive = pathname === item.path;
-            return (
-              <div
-                key={item.label}
-                onClick={() => navigate(item.path)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "10px 12px",
-                  marginBottom: 8,
-                  backgroundColor: isActive ? colors.highlight : "transparent",
-                  color: isActive ? colors.darkText : "#fff",
-                  borderRadius: 6,
-                  cursor: "pointer",
-                  fontWeight: isActive ? "bold" : 400,
-                  transition: "background 0.3s, color 0.3s",
-                }}
-              >
-                {item.icon}
-                {item.label}
-              </div>
-            );
-          })}
+          {menuItems.map((section, index) => (
+            <div key={index}>
+              <div style={sectionStyle}>{section.section}</div>
+              {section.items.map((item) => {
+                if (item.adminOnly && !isAdmin) return null;
+                const isActive = pathname === item.path;
+                return (
+                  <div
+                    key={item.label}
+                    onClick={() => navigate(item.path)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "10px 12px",
+                      marginBottom: 6,
+                      backgroundColor: isActive ? colors.highlight : "transparent",
+                      color: isActive ? colors.darkText : "#fff",
+                      borderRadius: 6,
+                      cursor: "pointer",
+                      fontWeight: isActive ? "bold" : 400,
+                      transition: "background 0.3s, color 0.3s",
+                    }}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </nav>
       </div>
 
