@@ -14,7 +14,7 @@ import MembershipPlanPage from './components/Homepage/Pages/MembershipPlanPage';
 import StaffPage from './components/Homepage/Pages/StaffPage';
 import StatisticsPage from './components/Homepage/Pages/StatisticsPage';
 import ChangePasswordPage from './components/Homepage/Pages/ChangePasswordPage';
-
+import MembershipPage from './components/Homepage/Pages/MembershipPage';
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
         <Route path="publisher" element={<PublisherPage />} />
         <Route path="customer" element={<CustomerPage />} />
         <Route path="membership-plan" element={<MembershipPlanPage />} />
+        <Route path="membership" element={<MembershipPage />} />
         <Route path="staff" element={<StaffPage />} />
         <Route path="statistics" element={<StatisticsPage />} />
         <Route path="change-password" element={<ChangePasswordPage />} />

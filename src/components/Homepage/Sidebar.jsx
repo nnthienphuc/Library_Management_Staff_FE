@@ -16,7 +16,8 @@ const menuItems = [
   { label: "Sách", path: "/admin/book", icon: <FaBook /> },
   { label: "Thể loại sách", path: "/admin/category", icon: <FaThLarge /> },
   { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
-  { label: "Hội viên", path: "/admin/membership-plan", icon: <FaUserEdit /> },
+  { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaUserEdit /> },
+  { label: "Hội viên", path: "/admin/membership", icon: <FaUserShield />, adminOnly: true },
   { label: "Nhân viên", path: "/admin/staff", icon: <FaUserShield />, adminOnly: true },
   { label: "Tác giả", path: "/admin/author", icon: <FaUserEdit /> },
   { label: "Nhà xuất bản", path: "/admin/publisher", icon: <FaBuilding /> },
@@ -74,7 +75,7 @@ export default function Sidebar() {
         <nav>
           {menuItems.map((item) => {
             if (item.adminOnly && !isAdmin) return null;
-            const isActive = pathname.startsWith(item.path);
+            const isActive = pathname === item.path;
             return (
               <div
                 key={item.label}
