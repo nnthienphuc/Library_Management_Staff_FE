@@ -16,6 +16,7 @@ const menuItems = [
   { label: "Sách", path: "/admin/book", icon: <FaBook /> },
   { label: "Thể loại sách", path: "/admin/category", icon: <FaThLarge /> },
   { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
+  { label: "Hội viên", path: "/admin/membership-plan", icon: <FaUserEdit /> },
   { label: "Nhân viên", path: "/admin/staff", icon: <FaUserShield />, adminOnly: true },
   { label: "Tác giả", path: "/admin/author", icon: <FaUserEdit /> },
   { label: "Nhà xuất bản", path: "/admin/publisher", icon: <FaBuilding /> },

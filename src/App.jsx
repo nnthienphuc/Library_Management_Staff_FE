@@ -10,6 +10,7 @@ import ForgotPasswordForm from './components/ForgotPassword';
 import PrivateRoute from './components/PrivateRoute';
 import BookPage from './components/Homepage/Pages/BookPage';
 import CustomerPage from './components/Homepage/Pages/CustomerPage';
+import MembershipPlanPage from './components/Homepage/Pages/MembershipPlanPage';
 import StaffPage from './components/Homepage/Pages/StaffPage';
 import StatisticsPage from './components/Homepage/Pages/StatisticsPage';
 import ChangePasswordPage from './components/Homepage/Pages/ChangePasswordPage';
@@ -34,6 +35,7 @@ function App() {
         <Route path="author" element={<AuthorPage />} />
         <Route path="publisher" element={<PublisherPage />} />
         <Route path="customer" element={<CustomerPage />} />
+        <Route path="membership-plan" element={<MembershipPlanPage />} />
         <Route path="staff" element={<StaffPage />} />
         <Route path="statistics" element={<StatisticsPage />} />
         <Route path="change-password" element={<ChangePasswordPage />} />
