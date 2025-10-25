@@ -18,6 +18,7 @@ export default function CustomerPage() {
     dateOfBirth: "",
     address: "",
     phone: "",
+    email: "",
     gender: false,
     isDeleted: false,
   });
@@ -50,6 +51,7 @@ export default function CustomerPage() {
       dateOfBirth: "",
       address: "",
       phone: "",
+      email: "",
       gender: false,
       isDeleted: false,
     });
@@ -65,6 +67,7 @@ export default function CustomerPage() {
       dateOfBirth: cust.dateOfBirth,
       address: cust.address,
       phone: cust.phone,
+      email: cust.email,
       gender: cust.gender,
       isDeleted: cust.isDeleted,
     });
@@ -80,6 +83,7 @@ export default function CustomerPage() {
         dateOfBirth: form.dateOfBirth,
         address: form.address,
         phone: form.phone,
+        email: form.email,
         gender: form.gender,
         isDeleted: form.isDeleted,
       };
@@ -379,6 +383,7 @@ export default function CustomerPage() {
                   { label: "Ngày sinh", name: "dateOfBirth", type: "date" },
                   { label: "Địa chỉ", name: "address" },
                   { label: "SĐT", name: "phone" },
+                  { label: "Email", name: "email", type: "email" },
                 ].map(({ label, name, type }) => (
                   <div key={name} className="col-md-6">
                     <label>{label}</label>
