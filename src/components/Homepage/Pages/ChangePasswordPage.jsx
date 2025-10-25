@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export default function ChangePasswordPage() {
   const [form, setForm] = useState({
@@ -12,12 +13,12 @@ export default function ChangePasswordPage() {
 
   const handleChangePassword = async () => {
     if (!form.oldPassword || !form.newPassword || !form.confirmNewPassword) {
-      alert("Vui lòng điền đầy đủ thông tin.");
+      toast.error("Vui lòng điền đầy đủ thông tin.");
       return;
     }
 
     if (form.newPassword !== form.confirmNewPassword) {
-      alert("Mật khẩu mới và xác nhận không khớp.");
+      toast.error("Mật khẩu mới và xác nhận không khớp.");
       return;
     }
 
@@ -27,7 +28,7 @@ export default function ChangePasswordPage() {
         "http://localhost:5286/api/admin/auth/change-password",
         form
       );
-      alert(res.data?.message || "Đã đổi mật khẩu thành công.");
+      toast.success(res.data?.message || "Đã đổi mật khẩu thành công.");
       setForm({
         oldPassword: "",
         newPassword: "",
@@ -38,7 +39,7 @@ export default function ChangePasswordPage() {
         err.response?.data?.message ||
         err.response?.data?.detail ||
         "Lỗi đổi mật khẩu.";
-      alert(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

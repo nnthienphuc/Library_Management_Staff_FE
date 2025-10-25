@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export default function BookPopup({ open, onSelect, onClose }) {
   const [rows, setRows] = useState([]);
@@ -10,7 +11,7 @@ export default function BookPopup({ open, onSelect, onClose }) {
       axiosInstance
         .get("http://localhost:5286/api/admin/books")
         .then((res) => setRows(res.data.filter((x) => !x.isDeleted)))
-        .catch(() => alert("Không thể tải sách"));
+        .catch(() => toast.error("Không thể tải sách"));
       setQ(""); // reset ô tìm kiếm mỗi lần mở
     }
   }, [open]);

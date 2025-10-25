@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:5286/api/admin/authors";
 
@@ -42,7 +43,7 @@ export default function AuthorPage() {
       setAuthors(data);
       setPage(1); // mỗi lần tìm/sort quay về trang 1
     } catch (err) {
-      alert(err.response?.data?.message || "Không thể tải dữ liệu tác giả!");
+      toast.error(err.response?.data?.message || "Không thể tải dữ liệu tác giả!");
     }
   };
 
@@ -69,26 +70,28 @@ export default function AuthorPage() {
         IsDeleted: form.isDeleted,
       };
 
+      let res;
+
       if (isEdit) {
-        await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
+        res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
       } else {
-        await axiosInstance.post(API_BASE, payload);
+        res = await axiosInstance.post(API_BASE, payload);
       }
 
-      alert("Lưu thành công!");
+      toast.success(res.data?.message || "Lưu thành công!");
       setModalVisible(false);
       fetchAuthors();
     } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi lưu tác giả!");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu tác giả!");
     }
   };
 
   const handleDelete = async () => {
     try {
-      await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert("Xoá thành công!");
+      const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
+      toast.success(res.data?.message || "Xoá thành công!");
     } catch (err) {
-      alert(err.response?.data?.message || "Xoá thất bại!");
+      toast.error(err.response?.data?.message || "Xoá thất bại!");
     } finally {
       setDeleteId(null);
       fetchAuthors();

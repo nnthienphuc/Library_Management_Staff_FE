@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:5286/api/admin/memberships";
 
@@ -12,20 +13,28 @@ export default function MembershipPage() {
   const [deleteId, setDeleteId] = useState(null);
 
   const getSortedItems = () => {
-    let sorted = [...items];
-    const { key, direction } = sortConfig;
-    if (key) {
-      sorted.sort((a, b) => {
-        if (typeof a[key] === "string") {
-          return direction === "asc"
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
-        }
-        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
-      });
-    }
-    return sorted;
-  };
+  let sorted = [...items].map((item) => {
+    const now = new Date();
+    const end = new Date(item.endDate);
+    return {
+      ...item,
+      status: now <= end ? "Còn hạn" : "Hết hạn"
+    };
+  });
+
+  const { key, direction } = sortConfig;
+  if (key) {
+    sorted.sort((a, b) => {
+      if (typeof a[key] === "string") {
+        return direction === "asc"
+          ? a[key].localeCompare(b[key])
+          : b[key].localeCompare(a[key]);
+      }
+      return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+    });
+  }
+  return sorted;
+};
 
   const handleSort = (key) => {
     setSortConfig((prev) => ({
@@ -43,7 +52,7 @@ export default function MembershipPage() {
       setItems(res.data || []);
       setPage(1);
     } catch (err) {
-      alert(err.response?.data?.message || "Không thể tải danh sách!");
+      toast.error(err.response?.data?.message || "Không thể tải danh sách!");
     }
   };
 
@@ -54,9 +63,9 @@ export default function MembershipPage() {
   const handleDelete = async () => {
     try {
       const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert(res.data?.message || "Xoá thành công!");
+      toast.success(res.data?.message || "Xoá thành công!");
     } catch (err) {
-      alert(err.response?.data?.message || "Xoá thất bại!");
+      toast.error(err.response?.data?.message || "Xoá thất bại!");
     } finally {
       setDeleteId(null);
       fetchData();
@@ -110,6 +119,7 @@ export default function MembershipPage() {
             <th onClick={() => handleSort("planName")}>Gói</th>
             <th onClick={() => handleSort("startDate")}>Bắt đầu</th>
             <th onClick={() => handleSort("endDate")}>Kết thúc</th>
+            <th onClick={() => handleSort("status")}>Trạng thái</th>
             <th onClick={() => handleSort("paymentMethod")}>Thanh toán</th>
             <th onClick={() => handleSort("isDeleted")}>Đã xoá</th>
             <th>Thao tác</th>
@@ -130,6 +140,7 @@ export default function MembershipPage() {
                 <td>{item.planName}</td>
                 <td>{new Date(item.startDate).toLocaleDateString()}</td>
                 <td>{new Date(item.endDate).toLocaleDateString()}</td>
+                <td>{item.status}</td>
                 <td>{item.paymentMethod}</td>
                 <td>
                   <input type="checkbox" checked={item.isDeleted} readOnly />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../../utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 const API_BASE = 'http://localhost:5286/api/admin/publishers';
 
@@ -41,7 +42,7 @@ export default function PublisherPage() {
       setPublishers(data);
       setPage(1); // mỗi lần tìm/sort quay về trang 1
     } catch (err) {
-      alert(err.response?.data?.message || 'Không thể tải dữ liệu!');
+      toast.error(err.response?.data?.message || 'Không thể tải dữ liệu!');
     }
   };
 
@@ -76,20 +77,20 @@ export default function PublisherPage() {
         res = await axiosInstance.post(API_BASE, payload);
       }
 
-      alert(res.data?.message || "Lưu thành công!");
+      toast.success(res.data?.message || "Lưu thành công!");
       setModalVisible(false);
       fetchPublishers();
     } catch (err) {
-      alert(err.response?.data?.message || 'Có lỗi xảy ra!');
+      toast.error(err.response?.data?.message || 'Có lỗi xảy ra!');
     }
   };
 
   const handleDelete = async () => {
     try {
       const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert(res.data?.message || "Xoá thành công!");
+      toast.success(res.data?.message || "Xoá thành công!");
     } catch (err) {
-      alert(err.response?.data?.message || 'Xoá thất bại!');
+      toast.error(err.response?.data?.message || 'Xoá thất bại!');
     } finally {
       setDeleteId(null);
       fetchPublishers();

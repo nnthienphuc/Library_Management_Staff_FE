@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import RevenueChart from "./RevenueChart";
+import { toast } from "react-toastify";
 
 export default function StatisticsPage() {
   const [data, setData] = useState({
@@ -18,7 +19,7 @@ export default function StatisticsPage() {
 
   // --- chỉ thêm: helper redirect khi không có quyền ---
   const redirectToBooks = () => {
-    alert("Bạn không có quyền truy cập vào trang này.");
+    toast.error("Bạn không có quyền truy cập vào trang này.");
     // đổi đường dẫn này cho đúng route BookPage của bạn nếu khác
     window.location.href = "/admin/books";
   };
@@ -43,7 +44,7 @@ export default function StatisticsPage() {
         redirectToBooks();
         return;
       }
-      alert("Lỗi tải dữ liệu thống kê.");
+      toast.error("Lỗi tải dữ liệu thống kê.");
     }
   };
 

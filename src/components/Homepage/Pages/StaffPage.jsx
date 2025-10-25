@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:5286/api/admin/staffs";
 
@@ -33,7 +34,7 @@ export default function StaffPage() {
 
   // --- helper chuyển trang khi không có quyền ---
   const redirectNoPermission = () => {
-    alert("Bạn không có quyền truy cập vào trang này.");
+    toast.error("Bạn không có quyền truy cập vào trang này.");
     // đổi path nếu route BookPage của bạn khác
     window.location.href = "/admin/books";
   };
@@ -50,7 +51,7 @@ export default function StaffPage() {
         redirectNoPermission();
         return;
       }
-      alert("Không thể tải danh sách nhân viên.");
+      toast.error("Không thể tải danh sách nhân viên.");
     }
   };
 
@@ -94,7 +95,7 @@ export default function StaffPage() {
         res = await axiosInstance.post(API_BASE, payload);
       }
 
-      alert(res.data?.message || "Lưu thành công.");
+      toast.success(res.data?.message || "Lưu thành công.");
       setModalVisible(false);
       fetchStaffs();
     } catch (err) {
@@ -103,21 +104,21 @@ export default function StaffPage() {
         redirectNoPermission();
         return;
       }
-      alert(err.response?.data?.message || "Lỗi khi lưu nhân viên.");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu nhân viên.");
     }
   };
 
   const handleDelete = async () => {
     try {
       const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert(res.data?.message || "Xóa thành công.");
+      toast.success(res.data?.message || "Xóa thành công.");
     } catch (err) {
       const status = err?.response?.status;
       if (status === 401 || status === 403) {
         redirectNoPermission();
         return;
       }
-      alert(err.response?.data?.message || "Xóa thất bại.");
+      toast.error(err.response?.data?.message || "Xóa thất bại.");
     } finally {
       setDeleteId(null);
       fetchStaffs();

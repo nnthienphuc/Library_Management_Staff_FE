@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import SelectPopup from "./SelectPopup";
+import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:5286/api/admin/books";
 
@@ -60,7 +61,7 @@ export default function BookPage() {
       // Mỗi lần tìm kiếm/sắp xếp xong thì quay về trang 1
       setPage(1);
     } catch (err) {
-      alert("Không thể tải sách!");
+      toast.error("Không thể tải sách!");
     }
   };
 
@@ -180,20 +181,20 @@ export default function BookPage() {
         res = await axiosInstance.post(API_BASE, formData);
       }
 
-      alert(res.data?.message || "Lưu thành công!");
+      toast.success(res.data?.message || "Lưu thành công!");
       setModalVisible(false);
       fetchBooks();
     } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi lưu sách!");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu sách!");
     }
   };
 
   const handleDelete = async () => {
     try {
       const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
-      alert(res.data?.message || "Xoá thành công!");
+      toast.success(res.data?.message || "Xoá thành công!");
     } catch (err) {
-      alert(err.response?.data?.message || "Xoá thất bại!");
+      toast.error(err.response?.data?.message || "Xoá thất bại!");
     } finally {
       setDeleteId(null);
       fetchBooks();

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const API_BASE = "http://localhost:5286/api/admin/customers";
 
@@ -25,7 +26,7 @@ export default function CustomerPopup({ open, onSelect, onClose }) {
       const res = await axiosInstance.get(API_BASE);
       setRows(res.data.filter((x) => !x.isDeleted));
     } catch (err) {
-      alert("Không thể tải danh sách khách hàng.");
+      toast.error("Không thể tải danh sách khách hàng.");
     }
   };
 
@@ -86,11 +87,11 @@ export default function CustomerPopup({ open, onSelect, onClose }) {
 
       const res = await axiosInstance.post(API_BASE, payload);
 
-      alert(res.data?.message || "Lưu thành công.");
+      toast.success(res.data?.message || "Lưu thành công.");
       setModalVisible(false);
       fetchCustomers();
     } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi lưu khách hàng.");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu khách hàng.");
     }
   };
 
