@@ -151,7 +151,7 @@ export default function MembershipPlanPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th onClick={() => handleSort("id")} style={{ cursor: "pointer" }}>ID{renderSortArrow("id")}</th>
+            {/* <th onClick={() => handleSort("id")} style={{ cursor: "pointer" }}>ID{renderSortArrow("id")}</th> */}
             <th onClick={() => handleSort("name")} style={{ cursor: "pointer" }}>Tên{renderSortArrow("name")}</th>
             <th onClick={() => handleSort("months")} style={{ cursor: "pointer" }}>Tháng{renderSortArrow("months")}</th>
             <th onClick={() => handleSort("price")} style={{ cursor: "pointer" }}>Giá{renderSortArrow("price")}</th>
@@ -167,7 +167,7 @@ export default function MembershipPlanPage() {
             pageItems.map((item, i) => (
               <tr key={item.id}>
                 <td>{start + i + 1}</td>
-                <td style={{ wordBreak: "break-all" }}>{item.id}</td>
+                {/* <td style={{ wordBreak: "break-all" }}>{item.id}</td> */}
                 <td>{item.name}</td>
                 <td>{item.months}</td>
                 <td>{item.price.toLocaleString()}₫</td>
