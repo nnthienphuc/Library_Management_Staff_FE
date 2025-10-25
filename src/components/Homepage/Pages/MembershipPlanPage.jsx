@@ -91,7 +91,7 @@ export default function MembershipPlanPage() {
       setModalVisible(false);
       fetchData();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Lỗi khi lưu gói thành viên!");
+      handleApiError(err, "Lỗi khi lưu gói thành viên!");
     }
   };
 

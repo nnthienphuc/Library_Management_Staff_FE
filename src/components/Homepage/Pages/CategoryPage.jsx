@@ -80,7 +80,7 @@ export default function CategoryPage() {
       setModalVisible(false);
       fetchCategories();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Có lỗi xảy ra!");
+      handleApiError(err, "Lỗi khi lưu thể loại!");
     }
   };
 

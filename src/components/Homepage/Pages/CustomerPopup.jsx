@@ -91,7 +91,7 @@ export default function CustomerPopup({ open, onSelect, onClose }) {
       setModalVisible(false);
       fetchCustomers();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Lỗi khi lưu khách hàng.");
+      handleApiError(err, "Lỗi khi lưu khách hàng!");
     }
   };
 

@@ -81,7 +81,7 @@ export default function PublisherPage() {
       setModalVisible(false);
       fetchPublishers();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Có lỗi xảy ra!');
+      handleApiError(err, "Lỗi khi lưu nhà xuất bản!");
     }
   };
 

@@ -104,7 +104,7 @@ export default function StaffPage() {
         redirectNoPermission();
         return;
       }
-      toast.error(err.response?.data?.message || "Lỗi khi lưu nhân viên.");
+      handleApiError(err, "Lỗi khi lưu nhân viên!");
     }
   };
 

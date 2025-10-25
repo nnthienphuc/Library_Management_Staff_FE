@@ -82,7 +82,7 @@ export default function AuthorPage() {
       setModalVisible(false);
       fetchAuthors();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Lỗi khi lưu tác giả!");
+      handleApiError(err, "Lỗi khi lưu tác giả!");
     }
   };
 
