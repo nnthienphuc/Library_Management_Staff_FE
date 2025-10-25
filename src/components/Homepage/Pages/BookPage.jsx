@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import SelectPopup from "./SelectPopup";
 import { toast } from "react-toastify";
+import { handleApiError } from "../../../utils/errorHandler";
 
 const API_BASE = "http://localhost:5286/api/admin/books";
 
@@ -185,7 +186,7 @@ export default function BookPage() {
       setModalVisible(false);
       fetchBooks();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Lỗi khi lưu sách!");
+      handleApiError(err, "Lỗi khi lưu sách!");
     }
   };
 
