@@ -43,7 +43,9 @@ export default function AuthorPage() {
       setAuthors(data);
       setPage(1); // mỗi lần tìm/sort quay về trang 1
     } catch (err) {
-      toast.error(err.response?.data?.message || "Không thể tải dữ liệu tác giả!");
+      toast.error(
+        err.response?.data?.message || "Không thể tải dữ liệu tác giả!"
+      );
     }
   };
 
@@ -159,9 +161,9 @@ export default function AuthorPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th onClick={() => toggleSort("id")} style={{ cursor: "pointer" }}>
+            {/* <th onClick={() => toggleSort("id")} style={{ cursor: "pointer" }}>
               ID {getSortIcon("id")}
-            </th>
+            </th> */}
             <th
               onClick={() => toggleSort("name")}
               style={{ cursor: "pointer" }}
@@ -188,12 +190,30 @@ export default function AuthorPage() {
             pageItems.map((author, i) => (
               <tr key={author.id}>
                 <td>{start + i + 1}</td>
-                <td style={{ wordBreak: "break-all" }}>{author.id}</td>
+                {/* <td style={{ wordBreak: "break-all" }}>{author.id}</td> */}
                 <td>{author.name}</td>
                 <td>
                   <input type="checkbox" checked={author.isDeleted} readOnly />
                 </td>
                 <td>
+                  <button
+                    className="btn btn-secondary btn-sm me-2"
+                    onClick={async () => {
+                      try {
+                        const res = await axiosInstance.get(
+                          `${API_BASE}/${author.id}`
+                        );
+                        setForm(res.data); // set lại dữ liệu để hiện lên modal
+                        setIsEdit(false); // không cho phép chỉnh sửa
+                        setModalVisible(true);
+                      } catch (err) {
+                        toast.error("Không thể tải chi tiết tác giả!");
+                      }
+                    }}
+                  >
+                    Xem chi tiết
+                  </button>
+
                   <button
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openEdit(author)}
@@ -305,6 +325,7 @@ export default function AuthorPage() {
                   placeholder="Tên tác giả"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  disabled={!isEdit}
                 />
                 <div className="form-check">
                   <input
@@ -315,6 +336,7 @@ export default function AuthorPage() {
                       setForm({ ...form, isDeleted: e.target.checked })
                     }
                     id="isDeletedCheck"
+                    disabled={!isEdit}
                   />
                   <label className="form-check-label" htmlFor="isDeletedCheck">
                     Đã xoá
