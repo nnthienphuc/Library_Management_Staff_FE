@@ -13,34 +13,39 @@ export default function MembershipPage() {
   const [deleteId, setDeleteId] = useState(null);
 
   const getSortedItems = () => {
-  let sorted = [...items].map((item) => {
-    const now = new Date();
-    const end = new Date(item.endDate);
-    return {
-      ...item,
-      status: now <= end ? "Còn hạn" : "Hết hạn"
-    };
-  });
-
-  const { key, direction } = sortConfig;
-  if (key) {
-    sorted.sort((a, b) => {
-      if (typeof a[key] === "string") {
-        return direction === "asc"
-          ? a[key].localeCompare(b[key])
-          : b[key].localeCompare(a[key]);
-      }
-      return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+    let sorted = [...items].map((item) => {
+      const now = new Date();
+      const end = new Date(item.endDate);
+      return {
+        ...item,
+        status: now <= end ? "Còn hạn" : "Hết hạn",
+      };
     });
-  }
-  return sorted;
-};
 
-  const handleSort = (key) => {
+    const { key, direction } = sortConfig;
+    if (key) {
+      sorted.sort((a, b) => {
+        if (typeof a[key] === "string") {
+          return direction === "asc"
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+        }
+        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+      });
+    }
+    return sorted;
+  };
+
+  const toggleSort = (key) => {
     setSortConfig((prev) => ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
+  };
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === "asc" ? " ▲" : " ▼";
   };
 
   const fetchData = async () => {
@@ -115,13 +120,49 @@ export default function MembershipPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th onClick={() => handleSort("customerName")}>Khách hàng</th>
-            <th onClick={() => handleSort("planName")}>Gói</th>
-            <th onClick={() => handleSort("startDate")}>Bắt đầu</th>
-            <th onClick={() => handleSort("endDate")}>Kết thúc</th>
-            <th onClick={() => handleSort("status")}>Trạng thái</th>
-            <th onClick={() => handleSort("paymentMethod")}>Thanh toán</th>
-            <th onClick={() => handleSort("isDeleted")}>Đã xoá</th>
+            <th
+              onClick={() => toggleSort("customerName")}
+              style={{ cursor: "pointer" }}
+            >
+              Khách hàng{getSortIcon("customerName")}
+            </th>
+            <th
+              onClick={() => toggleSort("planName")}
+              style={{ cursor: "pointer" }}
+            >
+              Gói{getSortIcon("planName")}
+            </th>
+            <th
+              onClick={() => toggleSort("startDate")}
+              style={{ cursor: "pointer" }}
+            >
+              Bắt đầu{getSortIcon("startDate")}
+            </th>
+            <th
+              onClick={() => toggleSort("endDate")}
+              style={{ cursor: "pointer" }}
+            >
+              Kết thúc{getSortIcon("endDate")}
+            </th>
+            <th
+              onClick={() => toggleSort("status")}
+              style={{ cursor: "pointer" }}
+            >
+              Trạng thái{getSortIcon("status")}
+            </th>
+            <th
+              onClick={() => toggleSort("paymentMethod")}
+              style={{ cursor: "pointer" }}
+            >
+              Thanh toán{getSortIcon("paymentMethod")}
+            </th>
+            <th
+              onClick={() => toggleSort("isDeleted")}
+              style={{ cursor: "pointer" }}
+            >
+              Đã xoá{getSortIcon("isDeleted")}
+            </th>
+
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -140,7 +181,21 @@ export default function MembershipPage() {
                 <td>{item.planName}</td>
                 <td>{new Date(item.startDate).toLocaleDateString()}</td>
                 <td>{new Date(item.endDate).toLocaleDateString()}</td>
-                <td>{item.status}</td>
+                <td>
+                  <span
+                    className="px-2 py-1 border rounded"
+                    style={{
+                      color: "black",
+                      borderColor:
+                        item.status === "Còn hạn" ? "#198754" : "#dc3545", // xanh hoặc đỏ
+                      backgroundColor:
+                        item.status === "Còn hạn" ? "#d1e7dd" : "#f8d7da", // nền nhạt tương ứng
+                    }}
+                  >
+                    {item.status}
+                  </span>
+                </td>
+
                 <td>{item.paymentMethod}</td>
                 <td>
                   <input type="checkbox" checked={item.isDeleted} readOnly />
@@ -162,7 +217,9 @@ export default function MembershipPage() {
       {/* Phân trang */}
       <div className="d-flex justify-content-between align-items-center mt-3">
         <div>
-          Hiển thị <strong>{total === 0 ? 0 : start + 1}</strong>–<strong>{Math.min(end, total)}</strong> / <strong>{total}</strong> bản ghi
+          Hiển thị <strong>{total === 0 ? 0 : start + 1}</strong>–
+          <strong>{Math.min(end, total)}</strong> / <strong>{total}</strong> bản
+          ghi
         </div>
         <div className="btn-group">
           <button
@@ -175,7 +232,9 @@ export default function MembershipPage() {
           {[...Array(totalPages)].map((_, i) => (
             <button
               key={i + 1}
-              className={`btn ${safePage === i + 1 ? "btn-primary" : "btn-outline-secondary"}`}
+              className={`btn ${
+                safePage === i + 1 ? "btn-primary" : "btn-outline-secondary"
+              }`}
               onClick={() => setPage(i + 1)}
             >
               {i + 1}
@@ -208,7 +267,10 @@ export default function MembershipPage() {
                 <p>Bạn có chắc chắn muốn xoá membership này?</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setDeleteId(null)}>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setDeleteId(null)}
+                >
                   Huỷ
                 </button>
                 <button className="btn btn-danger" onClick={handleDelete}>

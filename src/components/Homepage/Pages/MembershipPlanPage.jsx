@@ -38,13 +38,17 @@ export default function MembershipPlanPage() {
     return sorted;
   };
 
-  const handleSort = (key) => {
+  const toggleSort = (key) => {
     setSortConfig((prev) => ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
   };
 
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === "asc" ? " ▲" : " ▼";
+  };
   const fetchData = async () => {
     try {
       const url = search
@@ -153,11 +157,11 @@ export default function MembershipPlanPage() {
           <tr>
             <th>#</th>
             {/* <th onClick={() => handleSort("id")} style={{ cursor: "pointer" }}>ID{renderSortArrow("id")}</th> */}
-            <th onClick={() => handleSort("name")} style={{ cursor: "pointer" }}>Tên{renderSortArrow("name")}</th>
-            <th onClick={() => handleSort("months")} style={{ cursor: "pointer" }}>Tháng{renderSortArrow("months")}</th>
-            <th onClick={() => handleSort("price")} style={{ cursor: "pointer" }}>Giá{renderSortArrow("price")}</th>
-            <th onClick={() => handleSort("maxBooks")} style={{ cursor: "pointer" }}>Sách tối đa{renderSortArrow("maxBooks")}</th>
-            <th onClick={() => handleSort("isDeleted")} style={{ cursor: "pointer" }}>Đã xoá{renderSortArrow("isDeleted")}</th>
+            <th onClick={() => toggleSort("name")} style={{ cursor: "pointer" }}>Tên{getSortIcon("name")}</th>
+            <th onClick={() => toggleSort("months")} style={{ cursor: "pointer" }}>Tháng{getSortIcon("months")}</th>
+            <th onClick={() => toggleSort("price")} style={{ cursor: "pointer" }}>Giá{getSortIcon("price")}</th>
+            <th onClick={() => toggleSort("maxBooks")} style={{ cursor: "pointer" }}>Sách tối đa{getSortIcon("maxBooks")}</th>
+            <th onClick={() => toggleSort("isDeleted")} style={{ cursor: "pointer" }}>Đã xoá{getSortIcon("isDeleted")}</th>
             <th>Thao tác</th>
           </tr>
         </thead>
