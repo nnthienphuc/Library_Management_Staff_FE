@@ -51,7 +51,7 @@ export default function CategoryPage() {
 
   const openAdd = () => {
     setForm({ id: "", name: "", isDeleted: false });
-    setIsEdit(false);
+    setIsEdit(true);
     setModalVisible(true);
   };
 
@@ -68,7 +68,7 @@ export default function CategoryPage() {
         IsDeleted: form.isDeleted,
       };
 
-      let res; 
+      let res;
 
       if (isEdit) {
         res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
@@ -157,9 +157,9 @@ export default function CategoryPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th onClick={() => toggleSort("id")} style={{ cursor: "pointer" }}>
+            {/* <th onClick={() => toggleSort("id")} style={{ cursor: "pointer" }}>
               ID {getSortIcon("id")}
-            </th>
+            </th> */}
             <th
               onClick={() => toggleSort("name")}
               style={{ cursor: "pointer" }}
@@ -186,12 +186,29 @@ export default function CategoryPage() {
             pageItems.map((cat, i) => (
               <tr key={cat.id}>
                 <td>{start + i + 1}</td>
-                <td style={{ wordBreak: "break-all" }}>{cat.id}</td>
+                {/* <td style={{ wordBreak: "break-all" }}>{cat.id}</td> */}
                 <td>{cat.name}</td>
                 <td>
                   <input type="checkbox" checked={cat.isDeleted} readOnly />
                 </td>
                 <td>
+                  <button
+                    className="btn btn-secondary btn-sm me-2"
+                    onClick={async () => {
+                      try {
+                        const res = await axiosInstance.get(
+                          `${API_BASE}/${cat.id}`
+                        );
+                        setForm(res.data);
+                        setIsEdit(false); // 🟢 readonly mode
+                        setModalVisible(true);
+                      } catch (err) {
+                        toast.error("Không thể tải chi tiết thể loại!");
+                      }
+                    }}
+                  >
+                    Xem chi tiết
+                  </button>
                   <button
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openEdit(cat)}
@@ -288,8 +305,13 @@ export default function CategoryPage() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">
-                  {isEdit ? "Sửa" : "Thêm"} danh mục
+                  {isEdit
+                    ? form.id
+                      ? "Sửa thể loại"
+                      : "Thêm thể loại"
+                    : "Chi tiết thể loại"}
                 </h5>
+
                 <button
                   type="button"
                   className="btn-close"
@@ -300,24 +322,43 @@ export default function CategoryPage() {
                 <input
                   type="text"
                   className="form-control mb-2"
-                  placeholder="Tên danh mục"
+                  placeholder="Tên thể loại"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  disabled={!isEdit}
                 />
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={form.isDeleted}
-                    onChange={(e) =>
-                      setForm({ ...form, isDeleted: e.target.checked })
-                    }
-                    id="isDeletedCheck"
-                  />
-                  <label className="form-check-label" htmlFor="isDeletedCheck">
-                    Đã xoá
-                  </label>
-                </div>
+
+                {isEdit ? (
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={form.isDeleted}
+                      onChange={(e) =>
+                        setForm({ ...form, isDeleted: e.target.checked })
+                      }
+                      id="isDeletedCheck"
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="isDeletedCheck"
+                    >
+                      Đã xoá
+                    </label>
+                  </div>
+                ) : (
+                  <div className="mt-2">
+                    <strong>Trạng thái: </strong>
+                    <span
+                      style={{
+                        color: form.isDeleted ? "red" : "green",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {form.isDeleted ? "Đã xoá" : "Chưa bị xoá"}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
                 <button
@@ -326,9 +367,11 @@ export default function CategoryPage() {
                 >
                   Huỷ
                 </button>
-                <button className="btn btn-primary" onClick={handleSave}>
-                  Lưu
-                </button>
+                {isEdit && (
+                  <button className="btn btn-primary" onClick={handleSave}>
+                    Lưu
+                  </button>
+                )}
               </div>
             </div>
           </div>
