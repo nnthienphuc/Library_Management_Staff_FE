@@ -122,7 +122,7 @@ export default function BookPage() {
       image: null,
     });
     setPreview(null);
-    setIsEdit(false);
+    setIsEdit(true);
     setModalVisible(true);
   };
 
@@ -351,6 +351,28 @@ export default function BookPage() {
                 </td>
                 <td>
                   <button
+                    className="btn btn-secondary btn-sm me-2"
+                    onClick={async () => {
+                      try {
+                        const res = await axiosInstance.get(
+                          `${API_BASE}/${b.id}`
+                        );
+                        setForm(res.data);
+                        setPreview(
+                          res.data.image
+                            ? `http://localhost:5286/${res.data.image}`
+                            : null
+                        );
+                        setIsEdit(false); // chế độ xem chi tiết (readonly)
+                        setModalVisible(true);
+                      } catch (err) {
+                        toast.error("Không thể tải chi tiết sách!");
+                      }
+                    }}
+                  >
+                    Xem
+                  </button>
+                  <button
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openEdit(b)}
                   >
@@ -445,7 +467,14 @@ export default function BookPage() {
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{isEdit ? "Sửa" : "Thêm"} sách</h5>
+                <h5 className="modal-title">
+                  {isEdit
+                    ? form.id
+                      ? "Sửa sách"
+                      : "Thêm sách"
+                    : "Chi tiết sách"}
+                </h5>
+
                 <button
                   type="button"
                   className="btn-close"
@@ -464,6 +493,7 @@ export default function BookPage() {
                       onChange={(e) =>
                         setForm({ ...form, [field]: e.target.value })
                       }
+                      disabled={!isEdit}
                     />
                   </div>
                 ))}
@@ -486,6 +516,7 @@ export default function BookPage() {
                       <button
                         className="btn btn-outline-primary"
                         onClick={() => openPopup(type)}
+                        disabled={!isEdit}
                       >
                         Chọn
                       </button>
@@ -544,16 +575,31 @@ export default function BookPage() {
                   )}
                 </div>
 
-                <div className="col-md-6 d-flex align-items-center">
-                  <label className="form-label me-2">Đã xoá:</label>
-                  <input
-                    type="checkbox"
-                    checked={form.isDeleted}
-                    onChange={(e) =>
-                      setForm({ ...form, isDeleted: e.target.checked })
-                    }
-                  />
-                </div>
+                {isEdit ? (
+                  <div className="col-md-6 d-flex align-items-center">
+                    <label className="form-label me-2">Đã xoá:</label>
+                    <input
+                      type="checkbox"
+                      checked={form.isDeleted}
+                      onChange={(e) =>
+                        setForm({ ...form, isDeleted: e.target.checked })
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div className="col-md-6 d-flex align-items-center">
+                    <strong>Trạng thái: </strong>
+                    <span
+                      style={{
+                        color: form.isDeleted ? "red" : "green",
+                        fontWeight: "bold",
+                        marginLeft: "6px",
+                      }}
+                    >
+                      {form.isDeleted ? "Đã xoá" : "Chưa bị xoá"}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
                 <button
@@ -562,9 +608,11 @@ export default function BookPage() {
                 >
                   Huỷ
                 </button>
-                <button className="btn btn-primary" onClick={handleSave}>
-                  Lưu
-                </button>
+                {isEdit && (
+                  <button className="btn btn-primary" onClick={handleSave}>
+                    Lưu
+                  </button>
+                )}
               </div>
             </div>
           </div>
