@@ -54,10 +54,10 @@ export default function AuthorPage() {
   }, [search, sortConfig]);
 
   const openAdd = () => {
-    setForm({ id: "", name: "", isDeleted: false });
-    setIsEdit(false);
-    setModalVisible(true);
-  };
+  setForm({ id: "", name: "", isDeleted: false });
+  setIsEdit(true);
+  setModalVisible(true);
+};
 
   const openEdit = (author) => {
     setForm(author);
@@ -66,27 +66,29 @@ export default function AuthorPage() {
   };
 
   const handleSave = async () => {
-    try {
-      const payload = {
-        Name: form.name,
-        IsDeleted: form.isDeleted,
-      };
+  try {
+    const payload = {
+      Name: form.name,
+      IsDeleted: form.isDeleted,
+    };
 
-      let res;
+    let res;
 
-      if (isEdit) {
-        res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
-      } else {
-        res = await axiosInstance.post(API_BASE, payload);
-      }
-
-      toast.success(res.data?.message || "Lưu thành công!");
-      setModalVisible(false);
-      fetchAuthors();
-    } catch (err) {
-      handleApiError(err, "Lỗi khi lưu tác giả!");
+    if (form.id) {
+      res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
+    } else {
+      res = await axiosInstance.post(API_BASE, payload);
     }
-  };
+
+    toast.success(res.data?.message || "Lưu thành công!");
+    setModalVisible(false);
+    fetchAuthors();
+  } catch (err) {
+    toast.error(
+      err.response?.data?.message || "Lỗi khi lưu tác giả!"
+    );
+  }
+};
 
   const handleDelete = async () => {
     try {
@@ -310,8 +312,13 @@ export default function AuthorPage() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">
-                  {isEdit ? "Sửa" : "Thêm"} tác giả
-                </h5>
+  {isEdit
+    ? form.id
+      ? "Sửa tác giả"
+      : "Thêm tác giả"
+    : "Chi tiết tác giả"}
+</h5>
+
                 <button
                   type="button"
                   className="btn-close"
@@ -327,32 +334,49 @@ export default function AuthorPage() {
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   disabled={!isEdit}
                 />
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={form.isDeleted}
-                    onChange={(e) =>
-                      setForm({ ...form, isDeleted: e.target.checked })
-                    }
-                    id="isDeletedCheck"
-                    disabled={!isEdit}
-                  />
-                  <label className="form-check-label" htmlFor="isDeletedCheck">
-                    Đã xoá
-                  </label>
-                </div>
+                {isEdit ? (
+  <div className="form-check">
+    <input
+      className="form-check-input"
+      type="checkbox"
+      checked={form.isDeleted}
+      onChange={(e) =>
+        setForm({ ...form, isDeleted: e.target.checked })
+      }
+      id="isDeletedCheck"
+    />
+    <label className="form-check-label" htmlFor="isDeletedCheck">
+      Đã xoá
+    </label>
+  </div>
+) : (
+  <div className="mt-2">
+    <strong>Trạng thái: </strong>
+    <span
+      style={{
+        color: form.isDeleted ? "red" : "green",
+        fontWeight: "bold",
+      }}
+    >
+      {form.isDeleted ? "Đã xoá" : "Chưa bị xoá"}
+    </span>
+  </div>
+)}
+
               </div>
               <div className="modal-footer">
                 <button
                   className="btn btn-secondary"
                   onClick={() => setModalVisible(false)}
                 >
-                  Huỷ
+                  Đóng
                 </button>
-                <button className="btn btn-primary" onClick={handleSave}>
-                  Lưu
-                </button>
+
+                {isEdit && (
+                  <button className="btn btn-primary" onClick={handleSave}>
+                    Lưu
+                  </button>
+                )}
               </div>
             </div>
           </div>
