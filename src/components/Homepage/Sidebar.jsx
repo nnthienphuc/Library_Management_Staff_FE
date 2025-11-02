@@ -55,10 +55,16 @@ export default function Sidebar() {
     {
       section: "Khách & Hội viên",
       items: [
-        { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
-        { label: "Phiếu mượn", path: "/admin/borrow", icon: <FaFirstOrder /> },
-        { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaIdCard /> },
+        { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers />, adminOnly: true },
+        { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaIdCard />, adminOnly: true },
         { label: "Hội viên", path: "/admin/membership", icon: <FaAddressCard />, adminOnly: true },
+      ],
+    },
+    {
+      section: "Mượn trả & Thống kê",
+      items: [
+        { label: "Phiếu mượn", path: "/admin/borrow", icon: <FaFirstOrder /> },
+        { label: "Thống kê mượn sách", path: "/admin/statistics", icon: <FaSalesforce />, adminOnly: true  }
       ],
     },
     {
