@@ -13,7 +13,10 @@ import {
   FaAddressCard,
   FaIdCard,
   FaCogs,
+  FaFirstOrder,
+  FaSalesforce,
 } from "react-icons/fa";
+import { Fa42Group } from "react-icons/fa6";
 
 export default function Sidebar() {
   const { pathname } = useLocation();
@@ -53,6 +56,7 @@ export default function Sidebar() {
       section: "Khách & Hội viên",
       items: [
         { label: "Khách hàng", path: "/admin/customer", icon: <FaUsers /> },
+        { label: "Phiếu mượn", path: "/admin/borrow", icon: <FaFirstOrder /> },
         { label: "Gói hội viên", path: "/admin/membership-plan", icon: <FaIdCard /> },
         { label: "Hội viên", path: "/admin/membership", icon: <FaAddressCard />, adminOnly: true },
       ],
