@@ -150,9 +150,9 @@ export default function PublisherPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th onClick={() => toggleSort('id')} style={{ cursor: 'pointer' }}>
+            {/* <th onClick={() => toggleSort('id')} style={{ cursor: 'pointer' }}>
               ID {getSortIcon('id')}
-            </th>
+            </th> */}
             <th onClick={() => toggleSort('name')} style={{ cursor: 'pointer' }}>
               Tên {getSortIcon('name')}
             </th>
@@ -169,7 +169,7 @@ export default function PublisherPage() {
             pageItems.map((pub, i) => (
               <tr key={pub.id}>
                 <td>{start + i + 1}</td>
-                <td style={{ wordBreak: 'break-all' }}>{pub.id}</td>
+                {/* <td style={{ wordBreak: 'break-all' }}>{pub.id}</td> */}
                 <td>{pub.name}</td>
                 <td><input type="checkbox" checked={pub.isDeleted} readOnly /></td>
                 <td>
