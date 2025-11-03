@@ -6,15 +6,20 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
@@ -48,30 +53,52 @@ const BorrowBookChart = () => {
       .catch((err) => console.error(err));
   }, [year]);
 
+  const labels = [
+    "Tháng 1",
+    "Tháng 2",
+    "Tháng 3",
+    "Tháng 4",
+    "Tháng 5",
+    "Tháng 6",
+    "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
+    "Tháng 10",
+    "Tháng 11",
+    "Tháng 12",
+  ];
+
   const chartData = {
-    labels: [
-      "Tháng 1",
-      "Tháng 2",
-      "Tháng 3",
-      "Tháng 4",
-      "Tháng 5",
-      "Tháng 6",
-      "Tháng 7",
-      "Tháng 8",
-      "Tháng 9",
-      "Tháng 10",
-      "Tháng 11",
-      "Tháng 12",
-    ],
+    labels,
     datasets: [
-      {
-        label: `Sách mượn trong năm ${year}`,
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-        data: data,
-      },
-    ],
+  {
+    type: "bar",
+    label: `Sách mượn trong năm ${year}`,
+    backgroundColor: "rgba(54, 162, 235, 0.6)",
+    borderColor: "rgba(54, 162, 235, 1)",
+    borderWidth: 1,
+    data: data,
+    datalabels: {
+      anchor: "end",
+      align: "top",
+    },
+  },
+  {
+    type: "line",
+    label: "Xu hướng",
+    data: data,
+    borderColor: "rgba(255, 99, 132, 1)",
+    backgroundColor: "rgba(255, 99, 132, 0.1)",
+    fill: false,
+    tension: 0.3,
+    pointBackgroundColor: "#fff",
+    pointBorderColor: "rgba(255, 99, 132, 1)",
+    datalabels: {
+      display: false, // ✅ Tắt hiển thị số trên Line
+    },
+  },
+]
+
   };
 
   return (
@@ -112,7 +139,7 @@ const BorrowBookChart = () => {
         options={{
           responsive: true,
           plugins: {
-            legend: { display: false },
+            legend: { position: "top" },
             title: {
               display: true,
               text: `Tổng số sách mượn theo tháng (${year})`,
