@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axiosInstance from '../../../utils/axiosInstance';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../../../utils/axiosInstance";
+import { toast } from "react-toastify";
 
-const API_BASE = 'http://localhost:5286/api/admin/publishers';
+const API_BASE = "http://localhost:5286/api/admin/publishers";
 
 export default function PublisherPage() {
   const [publishers, setPublishers] = useState([]);
-  const [form, setForm] = useState({ id: '', name: '', isDeleted: false });
-  const [search, setSearch] = useState('');
+  const [form, setForm] = useState({ id: "", name: "", isDeleted: false });
+  const [search, setSearch] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
 
-  // --- PHÂN TRANG (client-side) ---
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  // ---------------------------------
 
   const fetchPublishers = async () => {
     try {
@@ -31,18 +29,18 @@ export default function PublisherPage() {
         data.sort((a, b) => {
           let aVal = a[sortConfig.key];
           let bVal = b[sortConfig.key];
-          if (typeof aVal === 'string') aVal = aVal.toLowerCase();
-          if (typeof bVal === 'string') bVal = bVal.toLowerCase();
-          if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
-          if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+          if (typeof aVal === "string") aVal = aVal.toLowerCase();
+          if (typeof bVal === "string") bVal = bVal.toLowerCase();
+          if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
+          if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
           return 0;
         });
       }
 
       setPublishers(data);
-      setPage(1); // mỗi lần tìm/sort quay về trang 1
+      setPage(1);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Không thể tải dữ liệu!');
+      toast.error(err.response?.data?.message || "Không thể tải dữ liệu nhà xuất bản!");
     }
   };
 
@@ -51,13 +49,13 @@ export default function PublisherPage() {
   }, [search, sortConfig]);
 
   const openAdd = () => {
-    setForm({ id: '', name: '', isDeleted: false });
-    setIsEdit(false);
+    setForm({ id: "", name: "", isDeleted: false });
+    setIsEdit(true);
     setModalVisible(true);
   };
 
-  const openEdit = (pub) => {
-    setForm(pub);
+  const openEdit = (publisher) => {
+    setForm(publisher);
     setIsEdit(true);
     setModalVisible(true);
   };
@@ -66,12 +64,12 @@ export default function PublisherPage() {
     try {
       const payload = {
         Name: form.name,
-        IsDeleted: form.isDeleted
+        IsDeleted: form.isDeleted,
       };
 
-      let res; 
+      let res;
 
-      if (isEdit) {
+      if (form.id) {
         res = await axiosInstance.put(`${API_BASE}/${form.id}`, payload);
       } else {
         res = await axiosInstance.post(API_BASE, payload);
@@ -81,7 +79,7 @@ export default function PublisherPage() {
       setModalVisible(false);
       fetchPublishers();
     } catch (err) {
-      handleApiError(err, "Lỗi khi lưu nhà xuất bản!");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu nhà xuất bản!");
     }
   };
 
@@ -90,7 +88,7 @@ export default function PublisherPage() {
       const res = await axiosInstance.delete(`${API_BASE}/${deleteId}`);
       toast.success(res.data?.message || "Xoá thành công!");
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Xoá thất bại!');
+      toast.error(err.response?.data?.message || "Xoá thất bại!");
     } finally {
       setDeleteId(null);
       fetchPublishers();
@@ -98,28 +96,25 @@ export default function PublisherPage() {
   };
 
   const toggleSort = (key) => {
-    setSortConfig(prev => {
+    setSortConfig((prev) => {
       if (prev.key === key) {
-        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+        return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
       }
-      return { key, direction: 'asc' };
+      return { key, direction: "asc" };
     });
-    setPage(1);
   };
 
   const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return '';
-    return sortConfig.direction === 'asc' ? '▲' : '▼';
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === "asc" ? "▲" : "▼";
   };
 
-  // --- TÍNH TOÁN PHÂN TRANG ---
   const total = publishers.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
   const start = (safePage - 1) * pageSize;
   const end = start + pageSize;
   const pageItems = publishers.slice(start, end);
-  // -----------------------------
 
   return (
     <div className="container mt-4">
@@ -133,15 +128,19 @@ export default function PublisherPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {/* Chọn kích thước trang */}
         <div className="ms-auto d-flex align-items-center gap-2">
           <span>Kích thước trang:</span>
           <select
             className="form-select w-auto"
             value={pageSize}
-            onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+              setPage(1);
+            }}
           >
-            {[5, 10, 20, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}
+            {[5, 10, 20, 50, 100].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -150,29 +149,42 @@ export default function PublisherPage() {
         <thead>
           <tr>
             <th>#</th>
-            {/* <th onClick={() => toggleSort('id')} style={{ cursor: 'pointer' }}>
-              ID {getSortIcon('id')}
-            </th> */}
-            <th onClick={() => toggleSort('name')} style={{ cursor: 'pointer' }}>
-              Tên {getSortIcon('name')}
+            <th onClick={() => toggleSort("name")} style={{ cursor: "pointer" }}>
+              Tên {getSortIcon("name")}
             </th>
-            <th onClick={() => toggleSort('isDeleted')} style={{ cursor: 'pointer' }}>
-              Đã xoá {getSortIcon('isDeleted')}
+            <th onClick={() => toggleSort("isDeleted")} style={{ cursor: "pointer" }}>
+              Đã xoá {getSortIcon("isDeleted")}
             </th>
             <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
           {pageItems.length === 0 ? (
-            <tr><td colSpan={5} className="text-center">Không có dữ liệu</td></tr>
+            <tr>
+              <td colSpan={4} className="text-center">Không có dữ liệu</td>
+            </tr>
           ) : (
             pageItems.map((pub, i) => (
               <tr key={pub.id}>
                 <td>{start + i + 1}</td>
-                {/* <td style={{ wordBreak: 'break-all' }}>{pub.id}</td> */}
                 <td>{pub.name}</td>
-                <td><input type="checkbox" checked={pub.isDeleted} readOnly /></td>
                 <td>
+                  <input type="checkbox" checked={pub.isDeleted} readOnly />
+                </td>
+                <td>
+                  <button
+                    className="btn btn-secondary btn-sm me-2"
+                    onClick={async () => {
+                      try {
+                        const res = await axiosInstance.get(`${API_BASE}/${pub.id}`);
+                        setForm(res.data);
+                        setIsEdit(false);
+                        setModalVisible(true);
+                      } catch {
+                        toast.error("Không thể tải chi tiết nhà xuất bản!");
+                      }
+                    }}
+                  >Xem chi tiết</button>
                   <button className="btn btn-info btn-sm me-2" onClick={() => openEdit(pub)}>Sửa</button>
                   <button className="btn btn-danger btn-sm" onClick={() => setDeleteId(pub.id)}>Xoá</button>
                 </td>
@@ -182,75 +194,55 @@ export default function PublisherPage() {
         </tbody>
       </table>
 
-      {/* Điều hướng phân trang (trượt + …) */}
       <div className="d-flex justify-content-between align-items-center mt-3">
         <div>
           Hiển thị <strong>{total === 0 ? 0 : start + 1}</strong>–<strong>{Math.min(end, total)}</strong> / <strong>{total}</strong> bản ghi
         </div>
         <div className="btn-group">
-          <button
-            className="btn btn-outline-secondary"
-            disabled={safePage === 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-          >
+          <button className="btn btn-outline-secondary" disabled={safePage === 1} onClick={() => setPage(p => Math.max(1, p - 1))}>
             ‹ Trước
           </button>
-
           {(() => {
-            const makePages = (totalP, current) => {
+            const makePages = (total, current) => {
               const MAX_SIMPLE = 7;
-              if (totalP <= MAX_SIMPLE) {
-                return Array.from({ length: totalP }, (_, i) => i + 1);
-              }
+              if (total <= MAX_SIMPLE) return Array.from({ length: total }, (_, i) => i + 1);
               const pages = [];
-              const delta = 1; // số trang kề 2 bên trang hiện tại
-
+              const delta = 1;
               const left = Math.max(2, current - delta);
-              const right = Math.min(totalP - 1, current + delta);
-
+              const right = Math.min(total - 1, current + delta);
               pages.push(1);
               if (left > 2) pages.push("…");
               for (let p = left; p <= right; p++) pages.push(p);
-              if (right < totalP - 1) pages.push("…");
-              pages.push(totalP);
-
+              if (right < total - 1) pages.push("…");
+              pages.push(total);
               return pages;
             };
-
-            return makePages(totalPages, safePage).map((p, idx) =>
+            return makePages(totalPages, safePage).map((p, i) =>
               p === "…" ? (
-                <button key={`e-${idx}`} className="btn btn-outline-secondary" disabled>
-                  …
-                </button>
+                <button key={`e-${i}`} className="btn btn-outline-secondary" disabled>…</button>
               ) : (
                 <button
                   key={p}
-                  className={`btn ${p === safePage ? 'btn-primary' : 'btn-outline-secondary'}`}
+                  className={`btn ${p === safePage ? "btn-primary" : "btn-outline-secondary"}`}
                   onClick={() => setPage(p)}
-                >
-                  {p}
-                </button>
+                >{p}</button>
               )
             );
           })()}
-
-          <button
-            className="btn btn-outline-secondary"
-            disabled={safePage === totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          >
+          <button className="btn btn-outline-secondary" disabled={safePage === totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))}>
             Sau ›
           </button>
         </div>
       </div>
 
-      {/* Modal Thêm/Sửa */}
       {modalVisible && (
         <div className="modal show fade d-block" tabIndex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{isEdit ? 'Sửa' : 'Thêm'} nhà xuất bản</h5>
+                <h5 className="modal-title">
+                  {isEdit ? form.id ? "Sửa nhà xuất bản" : "Thêm nhà xuất bản" : "Chi tiết nhà xuất bản"}
+                </h5>
                 <button type="button" className="btn-close" onClick={() => setModalVisible(false)}></button>
               </div>
               <div className="modal-body">
@@ -260,30 +252,39 @@ export default function PublisherPage() {
                   placeholder="Tên nhà xuất bản"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  disabled={!isEdit}
                 />
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={form.isDeleted}
-                    onChange={(e) => setForm({ ...form, isDeleted: e.target.checked })}
-                    id="isDeletedCheck"
-                  />
-                  <label className="form-check-label" htmlFor="isDeletedCheck">
-                    Đã xoá
-                  </label>
-                </div>
+                {isEdit ? (
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={form.isDeleted}
+                      onChange={(e) => setForm({ ...form, isDeleted: e.target.checked })}
+                      id="isDeletedCheck"
+                    />
+                    <label className="form-check-label" htmlFor="isDeletedCheck">
+                      Đã xoá
+                    </label>
+                  </div>
+                ) : (
+                  <div className="mt-2">
+                    <strong>Trạng thái: </strong>
+                    <span style={{ color: form.isDeleted ? "red" : "green", fontWeight: "bold" }}>
+                      {form.isDeleted ? "Đã xoá" : "Chưa bị xoá"}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setModalVisible(false)}>Huỷ</button>
-                <button className="btn btn-primary" onClick={handleSave}>Lưu</button>
+                <button className="btn btn-secondary" onClick={() => setModalVisible(false)}>Đóng</button>
+                {isEdit && <button className="btn btn-primary" onClick={handleSave}>Lưu</button>}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal Xoá */}
       {deleteId && (
         <div className="modal show fade d-block" tabIndex="-1">
           <div className="modal-dialog">
