@@ -125,7 +125,7 @@ export default function MembershipPlanPage() {
 
   return (
     <div className="container mt-4">
-      <h2>Gói Thành Viên</h2>
+      <h2>Danh sách Gói hội viên</h2>
       <div className="d-flex gap-2 mb-3">
         <button className="btn btn-success" onClick={openAdd}>Thêm</button>
         <input

@@ -87,7 +87,7 @@ export default function MembershipPage() {
 
   return (
     <div className="container mt-4">
-      <h2>Danh sách Gói Thành Viên</h2>
+      <h2>Danh sách Hội viên</h2>
 
       <div className="d-flex gap-2 mb-3">
         <input
