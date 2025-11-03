@@ -103,7 +103,9 @@ const BorrowBookChart = () => {
 
   return (
     <div>
-      <div className="d-flex gap-4 mb-4">
+      
+      {/* De day mot mo lai */}
+      {/* <div className="d-flex gap-4 mb-4">
         <div
           className="p-3 rounded text-white"
           style={{ backgroundColor: "#f48fb1", minWidth: "250px" }}
@@ -119,7 +121,7 @@ const BorrowBookChart = () => {
           <h6 className="mb-1">👤 Tổng số khách hàng</h6>
           <h4 className="fw-bold">{activeCustomers}</h4>
         </div>
-      </div>
+      </div> */}
 
       <h4>Thống kê số lượng sách mượn</h4>
       <select
