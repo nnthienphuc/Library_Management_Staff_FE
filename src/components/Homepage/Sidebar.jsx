@@ -64,7 +64,7 @@ export default function Sidebar() {
       section: "Mượn trả & Thống kê",
       items: [
         { label: "Phiếu mượn", path: "/admin/borrow", icon: <FaFirstOrder /> },
-        { label: "Thống kê mượn sách", path: "/admin/statistics", icon: <FaSalesforce />, adminOnly: true  }
+        { label: "Thống kê", path: "/admin/statistics", icon: <FaSalesforce />, adminOnly: true  }
       ],
     },
     {

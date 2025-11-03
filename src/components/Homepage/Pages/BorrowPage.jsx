@@ -277,7 +277,7 @@ export default function BorrowPage() {
                 </td>
 
                 <td>{b.note || "-"}</td>
-                <td>{new Date(b.updatedTime).toLocaleDateString()}</td>
+                <td>{new Date(b.updateAt).toLocaleDateString()}</td>
                 <td>
                   <input type="checkbox" checked={b.isDeleted} readOnly />
                 </td>
@@ -286,7 +286,7 @@ export default function BorrowPage() {
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openDetail(b.id)}
                   >
-                    Xem chi tiết
+                    Chi tiết
                   </button>
                   <br></br>
                   <button
