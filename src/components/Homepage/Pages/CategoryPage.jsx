@@ -192,7 +192,7 @@ export default function CategoryPage() {
                   <input type="checkbox" checked={cat.isDeleted} readOnly />
                 </td>
                 <td>
-                  <button
+                  {/* <button
                     className="btn btn-secondary btn-sm me-2"
                     onClick={async () => {
                       try {
@@ -208,7 +208,7 @@ export default function CategoryPage() {
                     }}
                   >
                     Xem chi tiết
-                  </button>
+                  </button> */}
                   <button
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openEdit(cat)}

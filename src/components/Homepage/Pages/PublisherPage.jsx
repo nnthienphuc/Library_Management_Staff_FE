@@ -172,7 +172,7 @@ export default function PublisherPage() {
                   <input type="checkbox" checked={pub.isDeleted} readOnly />
                 </td>
                 <td>
-                  <button
+                  {/* <button
                     className="btn btn-secondary btn-sm me-2"
                     onClick={async () => {
                       try {
@@ -184,7 +184,7 @@ export default function PublisherPage() {
                         toast.error("Không thể tải chi tiết nhà xuất bản!");
                       }
                     }}
-                  >Xem chi tiết</button>
+                  >Xem chi tiết</button> */}
                   <button className="btn btn-info btn-sm me-2" onClick={() => openEdit(pub)}>Sửa</button>
                   <button className="btn btn-danger btn-sm" onClick={() => setDeleteId(pub.id)}>Xoá</button>
                 </td>

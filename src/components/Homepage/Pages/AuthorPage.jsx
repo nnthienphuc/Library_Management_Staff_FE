@@ -198,7 +198,7 @@ export default function AuthorPage() {
                   <input type="checkbox" checked={author.isDeleted} readOnly />
                 </td>
                 <td>
-                  <button
+                  {/* <button
                     className="btn btn-secondary btn-sm me-2"
                     onClick={async () => {
                       try {
@@ -214,7 +214,7 @@ export default function AuthorPage() {
                     }}
                   >
                     Xem chi tiết
-                  </button>
+                  </button> */}
 
                   <button
                     className="btn btn-info btn-sm me-2"

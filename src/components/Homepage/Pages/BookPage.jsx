@@ -350,7 +350,7 @@ export default function BookPage() {
                   )}
                 </td>
                 <td>
-                  <button
+                  {/* <button
                     className="btn btn-secondary btn-sm me-2"
                     onClick={async () => {
                       try {
@@ -371,7 +371,7 @@ export default function BookPage() {
                     }}
                   >
                     Xem
-                  </button>
+                  </button> */}
                   <button
                     className="btn btn-info btn-sm me-2"
                     onClick={() => openEdit(b)}
