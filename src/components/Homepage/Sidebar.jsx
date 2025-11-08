@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { colors } from "../../theme";
 import {
   FaBook,
-  FaThLarge,
   FaUsers,
   FaUserShield,
   FaUserEdit,
@@ -12,11 +11,9 @@ import {
   FaLayerGroup,
   FaAddressCard,
   FaIdCard,
-  FaCogs,
   FaFirstOrder,
   FaSalesforce,
 } from "react-icons/fa";
-import { Fa42Group } from "react-icons/fa6";
 
 export default function Sidebar() {
   const { pathname } = useLocation();
@@ -31,17 +28,18 @@ export default function Sidebar() {
   };
 
   const sectionStyle = {
-  backgroundColor: "#0d3b4c", // Màu nhấn nền nhẹ
-  color: "#f0f0f0",           // Màu chữ sáng
-  padding: "8px 12px",
-  marginTop: 20,
-  borderRadius: 6,
-  fontSize: 14,
-  fontWeight: "bold",
-  textTransform: "uppercase",
-  letterSpacing: 0.5,
-};
+    backgroundColor: "#0d3b4c",
+    color: "#f0f0f0",
+    padding: "8px 12px",
+    marginTop: 20,
+    borderRadius: 6,
+    fontSize: 14,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  };
 
+  // 🧭 MENU CẤU HÌNH
   const menuItems = [
     {
       section: "Quản lý sách",
@@ -64,7 +62,7 @@ export default function Sidebar() {
       section: "Mượn trả & Thống kê",
       items: [
         { label: "Phiếu mượn", path: "/admin/borrow", icon: <FaFirstOrder /> },
-        { label: "Thống kê", path: "/admin/statistics", icon: <FaSalesforce />, adminOnly: true  }
+        { label: "Thống kê", path: "/admin/statistics", icon: <FaSalesforce />, adminOnly: true },
       ],
     },
     {
@@ -113,37 +111,46 @@ export default function Sidebar() {
 
         {/* MENU */}
         <nav>
-          {menuItems.map((section, index) => (
-            <div key={index}>
-              <div style={sectionStyle}>{section.section}</div>
-              {section.items.map((item) => {
-                if (item.adminOnly && !isAdmin) return null;
-                const isActive = pathname === item.path;
-                return (
-                  <div
-                    key={item.label}
-                    onClick={() => navigate(item.path)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      padding: "10px 12px",
-                      marginBottom: 6,
-                      backgroundColor: isActive ? colors.highlight : "transparent",
-                      color: isActive ? colors.darkText : "#fff",
-                      borderRadius: 6,
-                      cursor: "pointer",
-                      fontWeight: isActive ? "bold" : 400,
-                      transition: "background 0.3s, color 0.3s",
-                    }}
-                  >
-                    {item.icon}
-                    {item.label}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+          {menuItems
+            // 🔥 ẨN SECTION nếu không có item nào hiển thị
+            .filter((section) =>
+              section.items.some((item) => !item.adminOnly || isAdmin)
+            )
+            .map((section, index) => (
+              <div key={index}>
+                <div style={sectionStyle}>{section.section}</div>
+
+                {section.items.map((item) => {
+                  if (item.adminOnly && !isAdmin) return null;
+                  const isActive = pathname === item.path;
+
+                  return (
+                    <div
+                      key={item.label}
+                      onClick={() => navigate(item.path)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "10px 12px",
+                        marginBottom: 6,
+                        backgroundColor: isActive
+                          ? colors.highlight
+                          : "transparent",
+                        color: isActive ? colors.darkText : "#fff",
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        fontWeight: isActive ? "bold" : 400,
+                        transition: "background 0.3s, color 0.3s",
+                      }}
+                    >
+                      {item.icon}
+                      {item.label}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
         </nav>
       </div>
 
