@@ -396,6 +396,7 @@ export default function CustomerPage() {
                   { label: "Địa chỉ", name: "address" },
                   { label: "SĐT", name: "phone" },
                   { label: "Email", name: "email", type: "email" },
+                  { label: "Ghi chú", name: "note" },
                 ].map(({ label, name, type }) => (
                   <div key={name} className="col-md-6">
                     <label>{label}</label>
