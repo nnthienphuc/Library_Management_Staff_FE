@@ -233,12 +233,12 @@ export default function BorrowPage() {
             >
               Ngày cập nhật {renderSortIcon("updatedTime")}
             </th>
-            <th
+            {/* <th
               onClick={() => handleSort("isDeleted")}
               style={{ cursor: "pointer" }}
             >
               Đã xoá {renderSortIcon("isDeleted")}
-            </th>
+            </th> */}
             <th>Thao tác</th>
           </tr>
         </thead>
@@ -284,9 +284,9 @@ export default function BorrowPage() {
 
                 <td>{b.note || "-"}</td>
                 <td>{new Date(b.updateAt).toLocaleDateString()}</td>
-                <td>
+                {/* <td>
                   <input type="checkbox" checked={b.isDeleted} readOnly />
-                </td>
+                </td> */}
                 <td>
                   <button
                     className="btn btn-info btn-sm me-2"
@@ -294,7 +294,6 @@ export default function BorrowPage() {
                   >
                     Chi tiết
                   </button>
-                  <br></br>
                   <button
                     className="btn btn-warning btn-sm me-2"
                     onClick={() => openEdit(b)}
