@@ -192,6 +192,12 @@ export default function BorrowPage() {
               Khách hàng {renderSortIcon("customerName")}
             </th>
             <th
+              onClick={() => handleSort("customerEmail")}
+              style={{ cursor: "pointer" }}
+            >
+              Email KH {renderSortIcon("customerEmail")}
+            </th>
+            <th
               onClick={() => handleSort("staffName")}
               style={{ cursor: "pointer" }}
             >
@@ -249,6 +255,7 @@ export default function BorrowPage() {
               <tr key={b.id}>
                 <td>{start + i + 1}</td>
                 <td>{b.customerName}</td>
+                <td>{b.customerEmail}</td>
                 <td>{b.staffName || "-"}</td>
                 <td>{new Date(b.createdTime).toLocaleDateString()}</td>
                 <td>{new Date(b.returnDate).toLocaleDateString()}</td>
