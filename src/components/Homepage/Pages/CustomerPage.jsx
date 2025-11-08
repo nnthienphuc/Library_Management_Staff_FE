@@ -396,7 +396,6 @@ export default function CustomerPage() {
                   { label: "Địa chỉ", name: "address" },
                   { label: "SĐT", name: "phone" },
                   { label: "Email", name: "email", type: "email" },
-                  { label: "Ghi chú", name: "note" },
                 ].map(({ label, name, type }) => (
                   <div key={name} className="col-md-6">
                     <label>{label}</label>
@@ -410,6 +409,17 @@ export default function CustomerPage() {
                     />
                   </div>
                 ))}
+
+                <div className="col-12">
+                  <label>Ghi chú</label>
+                  <textarea
+                    className="form-control"
+                    rows="3"
+                    value={form.note || ""}
+                    onChange={(e) => setForm({ ...form, note: e.target.value })}
+                    placeholder="Nhập ghi chú cho khách hàng..."
+                  ></textarea>
+                </div>
 
                 <div className="col-md-6 d-flex align-items-center">
                   <label className="form-check-label me-2">Giới tính:</label>
