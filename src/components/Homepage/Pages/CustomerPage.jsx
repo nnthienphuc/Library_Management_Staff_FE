@@ -20,6 +20,7 @@ export default function CustomerPage() {
     address: "",
     phone: "",
     email: "",
+    note: "",
     gender: false,
     isDeleted: false,
   });
@@ -53,6 +54,7 @@ export default function CustomerPage() {
       address: "",
       phone: "",
       email: "",
+      note: "",
       gender: false,
       isDeleted: false,
     });
@@ -69,6 +71,7 @@ export default function CustomerPage() {
       address: cust.address,
       phone: cust.phone,
       email: cust.email,
+      note: cust.note,
       gender: cust.gender,
       isDeleted: cust.isDeleted,
     });
@@ -85,6 +88,7 @@ export default function CustomerPage() {
         address: form.address,
         phone: form.phone,
         email: form.email,
+        note: form.note,
         gender: form.gender,
         isDeleted: form.isDeleted,
       };
@@ -243,6 +247,12 @@ export default function CustomerPage() {
               Địa chỉ {renderSortIcon("address")}
             </th>
             <th
+              onClick={() => handleSort("note")}
+              style={{ cursor: "pointer" }}
+            >
+              Ghi chú {renderSortIcon("note")}
+            </th>
+            <th
               onClick={() => handleSort("isDeleted")}
               style={{ cursor: "pointer" }}
             >
@@ -270,6 +280,7 @@ export default function CustomerPage() {
                 <td>{c.phone}</td>
                 <td>{c.email || "-"}</td>
                 <td>{c.address}</td>
+                <td>{c.note || "-"}</td>
                 <td>
                   <input type="checkbox" checked={c.isDeleted} readOnly />
                 </td>
