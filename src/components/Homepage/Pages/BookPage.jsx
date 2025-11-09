@@ -186,7 +186,7 @@ export default function BookPage() {
       setModalVisible(false);
       fetchBooks();
     } catch (err) {
-      handleApiError(err, "Lỗi khi lưu sách!");
+      handleApiError(err.response?.data?.message || "Lỗi khi lưu sách!");
     }
   };
 

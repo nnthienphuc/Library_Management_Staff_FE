@@ -104,7 +104,7 @@ export default function CustomerPage() {
       setModalVisible(false);
       fetchCustomers();
     } catch (err) {
-      handleApiError(err, "Lỗi khi lưu khách hàng!");
+      toast.error(err.response?.data?.message || "Lỗi khi lưu khách hàng!");
     }
   };
 

@@ -95,7 +95,7 @@ export default function MembershipPlanPage() {
       setModalVisible(false);
       fetchData();
     } catch (err) {
-      handleApiError(err, "Lỗi khi lưu gói thành viên!");
+      handleApiError(err.response?.data?.message || "Lỗi khi lưu gói thành viên!");
     }
   };
 

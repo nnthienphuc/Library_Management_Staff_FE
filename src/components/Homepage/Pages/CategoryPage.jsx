@@ -80,7 +80,7 @@ export default function CategoryPage() {
       setModalVisible(false);
       fetchCategories();
     } catch (err) {
-      handleApiError(err, "Lỗi khi lưu thể loại!");
+      handleApiError(err.response?.data?.message || "Lỗi khi lưu thể loại!");
     }
   };
 

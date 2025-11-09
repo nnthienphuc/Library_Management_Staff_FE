@@ -104,7 +104,7 @@ export default function StaffPage() {
         redirectNoPermission();
         return;
       }
-      handleApiError(err, "Lỗi khi lưu nhân viên!");
+      handleApiError(err.response?.data?.message || "Lỗi khi lưu nhân viên!");
     }
   };
 
