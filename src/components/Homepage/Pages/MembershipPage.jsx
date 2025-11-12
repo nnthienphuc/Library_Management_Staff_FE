@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/dateUtils";
+
 
 const API_BASE = "http://localhost:5286/api/admin/memberships";
 
@@ -179,8 +181,8 @@ export default function MembershipPage() {
                 <td>{start + i + 1}</td>
                 <td>{item.customerName}</td>
                 <td>{item.planName}</td>
-                <td>{new Date(item.startDate).toLocaleDateString()}</td>
-                <td>{new Date(item.endDate).toLocaleDateString()}</td>
+                <td>{formatDate(item.startDate)}</td>
+<td>{formatDate(item.endDate)}</td>
                 <td>
                   <span
                     className="px-2 py-1 border rounded"

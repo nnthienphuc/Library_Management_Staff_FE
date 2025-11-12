@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/dateUtils";
 
 const API_BASE = "http://localhost:5286/api/admin/customers";
 
@@ -275,7 +276,7 @@ export default function CustomerPage() {
                 <td>{start + i + 1}</td>
                 <td>{c.familyName}</td>
                 <td>{c.givenName}</td>
-                <td>{c.dateOfBirth}</td>
+                <td>{formatDate(c.dateOfBirth)}</td>
                 <td>{c.gender ? "Nữ" : "Nam"}</td>
                 <td>{c.phone}</td>
                 <td>{c.email || "-"}</td>

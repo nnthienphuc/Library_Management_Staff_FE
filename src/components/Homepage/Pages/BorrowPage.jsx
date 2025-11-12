@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/dateUtils";
 
 const API_BASE = "http://localhost:5286/api/admin/borrows";
 
@@ -256,8 +257,8 @@ export default function BorrowPage() {
                 <td>{start + i + 1}</td>
                 <td>{b.customerName} <br></br>{b.customerEmail}</td>
                 <td>{b.staffName || "-"}</td>
-                <td>{new Date(b.createdTime).toLocaleDateString()}</td>
-                <td>{new Date(b.returnDate).toLocaleDateString()}</td>
+                <td>{formatDate(b.createdTime)}</td>
+<td>{formatDate(b.returnDate)}</td>
                 <td>
                   <span
                     className={`badge px-2 py-1 ${
@@ -283,7 +284,7 @@ export default function BorrowPage() {
                 </td>
 
                 <td>{b.note || "-"}</td>
-                <td>{new Date(b.updateAt).toLocaleDateString()}</td>
+                <td>{formatDate(b.updateAt)}</td>
                 {/* <td>
                   <input type="checkbox" checked={b.isDeleted} readOnly />
                 </td> */}

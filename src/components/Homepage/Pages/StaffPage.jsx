@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/dateUtils";
 
 const API_BASE = "http://localhost:5286/api/admin/staffs";
 
@@ -233,7 +234,7 @@ export default function StaffPage() {
                 <td>{start + i + 1}</td>
                 <td>{s.familyName}</td>
                 <td>{s.givenName}</td>
-                <td>{s.dateOfBirth}</td>
+                <td>{formatDate(s.dateOfBirth)}</td>
                 <td>{s.gender ? "Nữ" : "Nam"}</td>
                 <td>{s.phone}</td>
                 <td>{s.email}</td>

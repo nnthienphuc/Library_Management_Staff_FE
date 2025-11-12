@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { formatDate } from '../utils/dateUtils';
 
 const LABEL_WIDTH = '150px';
 const INPUT_WIDTH = '250px';
@@ -105,7 +106,7 @@ export default function RegisterForm() {
       label: "Ngày sinh:",
       name: "dateOfBirth",
       type: "date",
-      placeholder: "yyyy/mm/dd",
+      placeholder: "dd/MM/yyyy",
       component: "datepicker"
     },
     {
@@ -216,7 +217,7 @@ export default function RegisterForm() {
                         id={field.name}
                         selected={formData.dateOfBirth}
                         onChange={handleDateChange}
-                        dateFormat="yyyy/MM/dd"
+                        dateFormat="dd/MM/yyyy"
                         maxDate={new Date()}
                         showYearDropdown
                         scrollableYearDropdown
