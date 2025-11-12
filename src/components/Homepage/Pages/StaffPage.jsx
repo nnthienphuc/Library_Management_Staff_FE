@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/dateUtils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const API_BASE = "http://localhost:5286/api/admin/staffs";
 
@@ -59,6 +62,21 @@ export default function StaffPage() {
   useEffect(() => {
     fetchStaffs();
   }, [search]);
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container,
+    .react-datepicker__input-container input {
+      width: 100% !important;
+    }
+  `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const openAdd = () => {
     setForm({
@@ -147,7 +165,11 @@ export default function StaffPage() {
         let aValue = a[sortConfig.key];
         let bValue = b[sortConfig.key];
 
-        if (["gender", "isAdmin", "isActive", "isDeleted"].includes(sortConfig.key)) {
+        if (
+          ["gender", "isAdmin", "isActive", "isDeleted"].includes(
+            sortConfig.key
+          )
+        ) {
           aValue = aValue ? 1 : 0;
           bValue = bValue ? 1 : 0;
         } else if (sortConfig.key === "dateOfBirth") {
@@ -192,9 +214,16 @@ export default function StaffPage() {
           <select
             className="form-select w-auto"
             value={pageSize}
-            onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+              setPage(1);
+            }}
           >
-            {[5, 10, 20, 50, 100].map(n => <option key={n} value={n}>{n}</option>)}
+            {[5, 10, 20, 50, 100].map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -216,7 +245,11 @@ export default function StaffPage() {
               ["isActive", "Đang hoạt động"],
               ["isDeleted", "Đã xoá"],
             ].map(([key, label]) => (
-              <th key={key} onClick={() => handleSort(key)} style={{ cursor: "pointer" }}>
+              <th
+                key={key}
+                onClick={() => handleSort(key)}
+                style={{ cursor: "pointer" }}
+              >
                 {label} {renderSortIcon(key)}
               </th>
             ))}
@@ -226,7 +259,9 @@ export default function StaffPage() {
         <tbody>
           {pageItems.length === 0 ? (
             <tr>
-              <td colSpan={13} className="text-center">Không có dữ liệu</td>
+              <td colSpan={13} className="text-center">
+                Không có dữ liệu
+              </td>
             </tr>
           ) : (
             pageItems.map((s, i) => (
@@ -241,11 +276,25 @@ export default function StaffPage() {
                 <td>{s.address}</td>
                 <td>{s.citizenIdentification}</td>
                 <td>{s.isAdmin ? "Quản trị viên" : "Nhân viên"}</td>
-                <td><input type="checkbox" checked={s.isActive} readOnly /></td>
-                <td><input type="checkbox" checked={s.isDeleted} readOnly /></td>
                 <td>
-                  <button className="btn btn-info btn-sm me-2" onClick={() => openEdit(s)}>Sửa</button>
-                  <button className="btn btn-danger btn-sm" onClick={() => setDeleteId(s.id)}>Xoá</button>
+                  <input type="checkbox" checked={s.isActive} readOnly />
+                </td>
+                <td>
+                  <input type="checkbox" checked={s.isDeleted} readOnly />
+                </td>
+                <td>
+                  <button
+                    className="btn btn-info btn-sm me-2"
+                    onClick={() => openEdit(s)}
+                  >
+                    Sửa
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => setDeleteId(s.id)}
+                  >
+                    Xoá
+                  </button>
                 </td>
               </tr>
             ))
@@ -256,7 +305,9 @@ export default function StaffPage() {
       {/* Điều hướng phân trang (trượt + …) */}
       <div className="d-flex justify-content-between align-items-center mt-3">
         <div>
-          Hiển thị <strong>{total === 0 ? 0 : start + 1}</strong>–<strong>{Math.min(end, total)}</strong> / <strong>{total}</strong> bản ghi
+          Hiển thị <strong>{total === 0 ? 0 : start + 1}</strong>–
+          <strong>{Math.min(end, total)}</strong> / <strong>{total}</strong> bản
+          ghi
         </div>
         <div className="btn-group">
           <button
@@ -290,13 +341,19 @@ export default function StaffPage() {
 
             return makePages(totalPages, safePage).map((p, idx) =>
               p === "…" ? (
-                <button key={`e-${idx}`} className="btn btn-outline-secondary" disabled>
+                <button
+                  key={`e-${idx}`}
+                  className="btn btn-outline-secondary"
+                  disabled
+                >
                   …
                 </button>
               ) : (
                 <button
                   key={p}
-                  className={`btn ${p === safePage ? "btn-primary" : "btn-outline-secondary"}`}
+                  className={`btn ${
+                    p === safePage ? "btn-primary" : "btn-outline-secondary"
+                  }`}
                   onClick={() => setPage(p)}
                 >
                   {p}
@@ -321,8 +378,13 @@ export default function StaffPage() {
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{isEdit ? "Sửa" : "Thêm"} nhân viên</h5>
-                <button className="btn-close" onClick={() => setModalVisible(false)}></button>
+                <h5 className="modal-title">
+                  {isEdit ? "Sửa" : "Thêm"} nhân viên
+                </h5>
+                <button
+                  className="btn-close"
+                  onClick={() => setModalVisible(false)}
+                ></button>
               </div>
               <div className="modal-body row g-3">
                 {[
@@ -336,12 +398,34 @@ export default function StaffPage() {
                 ].map(({ label, name, type }) => (
                   <div key={name} className="col-md-6">
                     <label>{label}</label>
-                    <input
-                      type={type || "text"}
-                      className="form-control"
-                      value={form[name] || ""}
-                      onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-                    />
+                    {name === "dateOfBirth" ? (
+                      <DatePicker
+                        selected={
+                          form.dateOfBirth ? new Date(form.dateOfBirth) : null
+                        }
+                        onChange={(date) =>
+                          setForm({
+                            ...form,
+                            dateOfBirth: date ? format(date, "yyyy-MM-dd") : "",
+                          })
+                        }
+                        dateFormat="dd/MM/yyyy"
+                        showYearDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={100}
+                        placeholderText="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    ) : (
+                      <input
+                        type={type || "text"}
+                        className="form-control"
+                        value={form[name] || ""}
+                        onChange={(e) =>
+                          setForm({ ...form, [name]: e.target.value })
+                        }
+                      />
+                    )}
                   </div>
                 ))}
 
@@ -350,7 +434,9 @@ export default function StaffPage() {
                   <select
                     className="form-select"
                     value={form.gender}
-                    onChange={(e) => setForm({ ...form, gender: e.target.value === "true" })}
+                    onChange={(e) =>
+                      setForm({ ...form, gender: e.target.value === "true" })
+                    }
                   >
                     <option value="false">Nam</option>
                     <option value="true">Nữ</option>
@@ -362,7 +448,9 @@ export default function StaffPage() {
                   <select
                     className="form-select"
                     value={form.isAdmin}
-                    onChange={(e) => setForm({ ...form, isAdmin: e.target.value === "true" })}
+                    onChange={(e) =>
+                      setForm({ ...form, isAdmin: e.target.value === "true" })
+                    }
                   >
                     <option value="false">Nhân viên</option>
                     <option value="true">Quản trị viên</option>
@@ -374,7 +462,9 @@ export default function StaffPage() {
                   <input
                     type="checkbox"
                     checked={form.isActive}
-                    onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
+                    onChange={(e) =>
+                      setForm({ ...form, isActive: e.target.checked })
+                    }
                   />
                 </div>
 
@@ -383,13 +473,22 @@ export default function StaffPage() {
                   <input
                     type="checkbox"
                     checked={form.isDeleted}
-                    onChange={(e) => setForm({ ...form, isDeleted: e.target.checked })}
+                    onChange={(e) =>
+                      setForm({ ...form, isDeleted: e.target.checked })
+                    }
                   />
                 </div>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setModalVisible(false)}>Huỷ</button>
-                <button className="btn btn-primary" onClick={handleSave}>Lưu</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setModalVisible(false)}
+                >
+                  Huỷ
+                </button>
+                <button className="btn btn-primary" onClick={handleSave}>
+                  Lưu
+                </button>
               </div>
             </div>
           </div>
@@ -403,14 +502,24 @@ export default function StaffPage() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Xác nhận xoá</h5>
-                <button className="btn-close" onClick={() => setDeleteId(null)}></button>
+                <button
+                  className="btn-close"
+                  onClick={() => setDeleteId(null)}
+                ></button>
               </div>
               <div className="modal-body">
                 <p>Bạn có chắc chắn muốn xoá nhân viên này?</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setDeleteId(null)}>Huỷ</button>
-                <button className="btn btn-danger" onClick={handleDelete}>Xoá</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setDeleteId(null)}
+                >
+                  Huỷ
+                </button>
+                <button className="btn btn-danger" onClick={handleDelete}>
+                  Xoá
+                </button>
               </div>
             </div>
           </div>

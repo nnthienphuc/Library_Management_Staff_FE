@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/dateUtils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const API_BASE = "http://localhost:5286/api/admin/customers";
 
@@ -45,6 +48,21 @@ export default function CustomerPage() {
   useEffect(() => {
     fetchCustomers();
   }, [search]);
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+    .react-datepicker-wrapper,
+    .react-datepicker__input-container,
+    .react-datepicker__input-container input {
+      width: 100% !important;
+    }
+  `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   const openAdd = () => {
     setForm({
@@ -400,14 +418,34 @@ export default function CustomerPage() {
                 ].map(({ label, name, type }) => (
                   <div key={name} className="col-md-6">
                     <label>{label}</label>
-                    <input
-                      type={type || "text"}
-                      className="form-control"
-                      value={form[name] || ""}
-                      onChange={(e) =>
-                        setForm({ ...form, [name]: e.target.value })
-                      }
-                    />
+                    {name === "dateOfBirth" ? (
+                      <DatePicker
+                        selected={
+                          form.dateOfBirth ? new Date(form.dateOfBirth) : null
+                        }
+                        onChange={(date) =>
+                          setForm({
+                            ...form,
+                            dateOfBirth: date ? format(date, "yyyy-MM-dd") : "",
+                          })
+                        }
+                        dateFormat="dd/MM/yyyy"
+                        showYearDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={100}
+                        placeholderText="dd/MM/yyyy"
+                        className="form-control"
+                      />
+                    ) : (
+                      <input
+                        type={type || "text"}
+                        className="form-control"
+                        value={form[name] || ""}
+                        onChange={(e) =>
+                          setForm({ ...form, [name]: e.target.value })
+                        }
+                      />
+                    )}
                   </div>
                 ))}
 
