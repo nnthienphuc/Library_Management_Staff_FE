@@ -5,6 +5,8 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  BarController,
+  LineController,
   BarElement,
   PointElement,
   LineElement,
@@ -17,6 +19,8 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  BarController,
+  LineController,
   BarElement,
   PointElement,
   LineElement,
