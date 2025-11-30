@@ -89,6 +89,7 @@ export default function Sidebar() {
         top: 0,
         bottom: 0,
         padding: "16px 12px",
+        overflowY: "auto",
       }}
     >
       {/* HEADER */}
