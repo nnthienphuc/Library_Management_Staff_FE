@@ -79,25 +79,28 @@ export default function MembershipPlanPage() {
   };
 
   const handleSave = async () => {
-    try {
-      const payload = {
-        Name: form.name,
-        Months: form.months,
-        Price: form.price,
-        MaxBooks: form.maxBooks,
-        IsDeleted: form.isDeleted,
-      };
-      const res = isEdit
-        ? await axiosInstance.put(`${API_BASE}/${form.id}`, payload)
-        : await axiosInstance.post(API_BASE, payload);
+  try {
+    const payload = {
+      Name: form.name,
+      Months: form.months,
+      Price: form.price,
+      MaxBooks: form.maxBooks,
+      IsDeleted: form.isDeleted,
+    };
 
-      toast.success(res.data?.message || "Lưu thành công!");
-      setModalVisible(false);
-      fetchData();
-    } catch (err) {
-      handleApiError(err.response?.data?.message || "Lỗi khi lưu gói thành viên!");
-    }
-  };
+    const res = isEdit
+      ? await axiosInstance.put(`${API_BASE}/${form.id}`, payload)
+      : await axiosInstance.post(API_BASE, payload);
+
+    toast.success(res.data?.message || "Lưu thành công!");
+    setModalVisible(false);
+    fetchData();
+  } catch (err) {
+    const msg =
+      err.response?.data?.message || "Lỗi khi lưu gói thành viên!";
+    toast.error(msg);
+  }
+};
 
   const handleDelete = async () => {
     try {
@@ -210,15 +213,70 @@ export default function MembershipPlanPage() {
                 <button type="button" className="btn-close" onClick={() => setModalVisible(false)}></button>
               </div>
               <div className="modal-body">
-                <input type="text" className="form-control mb-2" placeholder="Tên gói" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                <input type="number" className="form-control mb-2" placeholder="Số tháng" min={1} max={12} value={form.months} onChange={(e) => setForm({ ...form, months: Number(e.target.value) })} />
-                <input type="number" className="form-control mb-2" placeholder="Giá (vnd)" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
-                <input type="number" className="form-control mb-2" placeholder="Số sách tối đa" value={form.maxBooks} onChange={(e) => setForm({ ...form, maxBooks: Number(e.target.value) })} />
-                <div className="form-check">
-                  <input className="form-check-input" type="checkbox" checked={form.isDeleted} onChange={(e) => setForm({ ...form, isDeleted: e.target.checked })} id="isDeletedCheck" />
-                  <label className="form-check-label" htmlFor="isDeletedCheck">Đã xoá</label>
-                </div>
-              </div>
+  <div className="mb-3">
+    <label className="form-label">Tên gói</label>
+    <input
+      type="text"
+      className="form-control"
+      value={form.name}
+      onChange={(e) => setForm({ ...form, name: e.target.value })}
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Số tháng</label>
+    <input
+      type="number"
+      className="form-control"
+      min={1}
+      max={12}
+      value={form.months}
+      onChange={(e) =>
+        setForm({ ...form, months: Number(e.target.value) })
+      }
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Giá (VND)</label>
+    <input
+      type="number"
+      className="form-control"
+      value={form.price}
+      onChange={(e) =>
+        setForm({ ...form, price: Number(e.target.value) })
+      }
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Số sách tối đa</label>
+    <input
+      type="number"
+      className="form-control"
+      value={form.maxBooks}
+      onChange={(e) =>
+        setForm({ ...form, maxBooks: Number(e.target.value) })
+      }
+    />
+  </div>
+
+  <div className="form-check">
+    <input
+      className="form-check-input"
+      type="checkbox"
+      checked={form.isDeleted}
+      onChange={(e) =>
+        setForm({ ...form, isDeleted: e.target.checked })
+      }
+      id="isDeletedCheck"
+    />
+    <label className="form-check-label" htmlFor="isDeletedCheck">
+      Đã xoá
+    </label>
+  </div>
+</div>
+
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={() => setModalVisible(false)}>Huỷ</button>
                 <button className="btn btn-primary" onClick={handleSave}>Lưu</button>
